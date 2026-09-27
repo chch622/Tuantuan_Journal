@@ -1,0 +1,4 @@
+interface:
+  display_name: "Android UI States Validation"
+  short_description: "Review Android UI flows for empty, loading, error, offline, and edge-case behavior before release"
+  default_prompt: "Use $android-ui-states-validation when the request is about review Android UI flows for empty, loading, error, offline, and edge-case behavior before release."

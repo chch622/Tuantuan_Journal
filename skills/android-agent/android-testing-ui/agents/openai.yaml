@@ -1,0 +1,4 @@
+interface:
+  display_name: "Android Testing UI"
+  short_description: "Validate Android UI behavior with Compose UI tests, Espresso-style checks, accessibility assertions, and state coverage"
+  default_prompt: "Use $android-testing-ui when the request is about validate Android UI behavior with Compose UI tests, Espresso-style checks, accessibility assertions, and state coverage."

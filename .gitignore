@@ -1,0 +1,53 @@
+# Android
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+*.jar
+!gradle-wrapper.jar
+
+# Android Studio / IntelliJ
+.idea/
+*.iml
+*.iws
+*.ipr
+.gradle/
+local.properties
+.navigation/
+
+# Kotlin
+*.kt.swp
+
+# Build
+build/
+out/
+app/build/
+*/build/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Environment
+.env
+.env.local
+*.keystore
+*.jks
+
+# Logs
+*.log
+
+# Cache
+.cxx/
+.gradle/
+.kotlin/
+
+# Backup files
+*~
+*.swp
+*.swo
+
+# JoyCode internal (keep .joycode/rules and .joycode/memory)
+.joycode/cache/

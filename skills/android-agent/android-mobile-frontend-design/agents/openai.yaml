@@ -1,0 +1,5 @@
+interface:
+  display_name: "Android Mobile Frontend Design"
+  short_description: "Design Android mobile screens from scratch, improve existing ones, and fix UI issues with brand-forward, localization-safe guidance."
+  default_prompt: "Use $android-mobile-frontend-design when the request is about designing Android mobile frontend experiences from scratch, redesigning existing screens, or fixing localization-safe and overflow-safe UI issues."
+

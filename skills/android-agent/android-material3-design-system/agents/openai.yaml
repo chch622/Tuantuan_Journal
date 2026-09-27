@@ -1,0 +1,4 @@
+interface:
+  display_name: "Android Material3 Design System"
+  short_description: "Apply Material 3 tokens, color, type, spacing, adaptive components, and theme ownership in Android apps"
+  default_prompt: "Use $android-material3-design-system when the request is about apply Material 3 tokens, color, type, spacing, adaptive components, and theme ownership in Android apps."

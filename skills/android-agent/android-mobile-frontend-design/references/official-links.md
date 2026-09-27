@@ -1,0 +1,16 @@
+# Android Mobile Frontend Design Official Links
+
+- [Compose overview](https://developer.android.com/develop/ui/compose)
+- [Material 3 in Compose](https://developer.android.com/develop/ui/compose/designsystems/material3)
+- [Custom design systems in Compose](https://developer.android.com/develop/ui/compose/designsystems/custom)
+- [Set up edge-to-edge in Compose](https://developer.android.com/develop/ui/compose/system/setup-e2e)
+- [Edge-to-edge design guidance](https://developer.android.com/design/ui/mobile/guides/layout-and-content/edge-to-edge)
+- [Use window size classes](https://developer.android.com/develop/ui/compose/layouts/adaptive/use-window-size-classes)
+- [Responsive/adaptive design with Views](https://developer.android.com/develop/ui/views/layout/responsive-adaptive-design-with-views)
+- [Display content edge-to-edge in Views](https://developer.android.com/develop/ui/views/layout/edge-to-edge)
+- [Support different languages and cultures](https://developer.android.com/training/basics/supporting-devices/languages.html)
+- [Localize your app](https://developer.android.com/guide/topics/resources/localization)
+- [Per-app language preferences](https://developer.android.com/guide/topics/resources/app-languages)
+- [Unicode and internationalization support](https://developer.android.com/guide/topics/resources/internationalization)
+- [Accessibility in apps](https://developer.android.com/guide/topics/ui/accessibility/apps)
+- [Large screen app quality](https://developer.android.com/docs/quality-guidelines/archive/adaptive/large-screen-app-quality)
