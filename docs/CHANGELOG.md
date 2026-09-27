@@ -7,6 +7,41 @@
 
 ## [Unreleased]
 
+### Added — UI/UX Design Bible
+
+- 创建 docs/design/DESIGN_BIBLE.md — 设计圣经总入口（Soft Emotional Minimalism）
+- 创建 docs/design/DESIGN_TOKENS.md — 完整 Design Token 系统
+- 创建 docs/design/COLOR_SYSTEM.md — 语义色系统与 5 主题色板
+- 创建 docs/design/TYPOGRAPHY.md — 字体规范与排版规则
+- 创建 docs/design/SPACING.md — 间距系统与布局原则
+- 创建 docs/design/SHAPES.md — 圆角与形状系统
+- 创建 docs/design/ICONOGRAPHY.md — 图标系统（Material Icons Outlined）
+- 创建 docs/design/COMPONENTS.md — 组件库（Atoms/Molecules/Organisms/Screens）
+- 创建 docs/design/NAVIGATION.md — 导航设计（底部导航 + 页面层级）
+- 创建 docs/design/HOME_PAGE.md — 首页设计（团团主视觉）
+- 创建 docs/design/TIMELINE_PAGE.md — 时间轴页面设计
+- 创建 docs/design/CALENDAR_PAGE.md — 日历页面设计
+- 创建 docs/design/GALLERY_PAGE.md — 照片墙设计（动态排版）
+- 创建 docs/design/ENTRY_EDITOR.md — 记录编辑器设计
+- 创建 docs/design/GROWTH_PAGE.md — 成长页面设计
+- 创建 docs/design/MILESTONE_PAGE.md — 里程碑页面设计
+- 创建 docs/design/SETTINGS_PAGE.md — 设置页面设计
+- 创建 docs/design/MEDIA_UX.md — 媒体交互设计（照片/视频/音频）
+- 创建 docs/design/GESTURES.md — 手势设计
+- 创建 docs/design/MICRO_INTERACTIONS.md — 微交互系统
+- 创建 docs/design/ANIMATION_BIBLE.md — 动画圣经
+- 创建 docs/design/MOTION_TOKENS.md — 动效 Token
+- 创建 docs/design/EMPTY_STATES.md — 空状态设计
+- 创建 docs/design/ERROR_STATES.md — 错误状态设计
+- 创建 docs/design/LOADING_STATES.md — 加载状态设计
+- 创建 docs/design/DARK_MODE.md — 深色模式设计
+- 创建 docs/design/THEMES.md — 主题系统（5 个主题）
+- 创建 docs/design/RESPONSIVE.md — 响应式设计
+- 创建 docs/design/ACCESSIBILITY.md — 无障碍设计
+- 创建 docs/design/PERFORMANCE_UI.md — UI 性能规范
+- 创建 docs/design/DESIGN_DECISIONS.md — 设计决策日志（10 个决策）
+- 创建 docs/design/DESIGN_REVIEW_CHECKLIST.md — 设计审查清单
+
 ## [0.1.0] - 2026-09-27
 
 ### Added — Phase 0: 项目基础设施
