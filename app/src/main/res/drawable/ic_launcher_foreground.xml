@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Book/notebook icon for journal app -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M34,28h28c2.2,0 4,1.8 4,4v44c0,2.2 -1.8,4 -4,4H34c-2.2,0 -4,-1.8 -4,-4V32C30,29.8 31.8,28 34,28z" />
+    <path
+        android:fillColor="#B2DFDB"
+        android:pathData="M36,38h24v4H36zM36,48h24v4H36zM36,58h16v4H36z" />
+    <path
+        android:fillColor="#80CBC4"
+        android:pathData="M54,26c0,-3.3 -2.7,-6 -6,-6s-6,2.7 -6,6v6h12V26z" />
+</vector>

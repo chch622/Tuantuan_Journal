@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 品牌色 - 温柔的粉色系 -->
+    <color name="tuantuan_primary">#FFB4A7</color>
+    <color name="tuantuan_on_primary">#FFFFFF</color>
+    <color name="tuantuan_primary_container">#FFF4F2</color>
+    <color name="tuantuan_on_primary_container">#5D1010</color>
+
+    <!-- 辅助色 - 暖灰系 -->
+    <color name="tuantuan_secondary">#76565A</color>
+    <color name="tuantuan_on_secondary">#FFFFFF</color>
+    <color name="tuantuan_secondary_container">#FFF4F2</color>
+    <color name="tuantuan_on_secondary_container">#291518</color>
+
+    <!-- 背景色 - 奶油白 -->
+    <color name="tuantuan_background">#FFF4F2</color>
+    <color name="tuantuan_on_background">#211A1B</color>
+
+    <!-- 表面色 -->
+    <color name="tuantuan_surface">#FFF4F2</color>
+    <color name="tuantuan_on_surface">#211A1B</color>
+    <color name="tuantuan_surface_variant">#F4DDDE</color>
+    <color name="tuantuan_on_surface_variant">#524344</color>
+
+    <!-- 功能色 -->
+    <color name="tuantuan_error">#B3261E</color>
+    <color name="tuantuan_on_error">#FFFFFF</color>
+    <color name="tuantuan_success">#6B8E6B</color>
+    <color name="tuantuan_warning">#F4A460</color>
+</resources>

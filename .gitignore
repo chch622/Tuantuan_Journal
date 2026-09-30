@@ -49,5 +49,8 @@ desktop.ini
 *.swp
 *.swo
 
-# JoyCode internal (keep .joycode/rules and .joycode/memory)
-.joycode/cache/
+# JoyCode internal - exclude all, not needed on GitHub
+.joycode/
+
+# AI Skills references - not part of project source
+skills/
