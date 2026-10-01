@@ -2,11 +2,13 @@ package com.tuantuan.journal.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.tuantuan.journal.R
 import com.tuantuan.journal.ui.screen.child.ChildAddScreen
 import com.tuantuan.journal.ui.screen.child.ChildDetailScreen
 import com.tuantuan.journal.ui.screen.child.ChildEditScreen
@@ -60,6 +62,12 @@ fun TuantuanNavigation(
                 },
                 onTagManageClick = {
                     navController.navigate(Screen.TagManage.route)
+                },
+                onDiaryClick = { entryId ->
+                    navController.navigate(Screen.DiaryDetail.createRoute(entryId))
+                },
+                onAddDiaryClick = { childId ->
+                    navController.navigate(Screen.DiaryAdd.createRoute(childId))
                 }
             )
         }
@@ -78,7 +86,7 @@ fun TuantuanNavigation(
                     navController.navigate(Screen.ChildAdd.route)
                 },
                 onBackClick = { navController.popBackStack() },
-                title = "选择儿童添加日记"
+                title = stringResource(R.string.diary_select_child)
             )
         }
 

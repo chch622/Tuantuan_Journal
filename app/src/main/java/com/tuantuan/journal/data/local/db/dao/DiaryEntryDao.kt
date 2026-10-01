@@ -51,6 +51,14 @@ interface DiaryEntryDao {
     """)
     fun getRecentEntries(childId: String, limit: Int = 10): Flow<List<DiaryEntryEntity>>
 
+    @Query("""
+        SELECT * FROM diary_entries 
+        WHERE childId = :childId AND isDeleted = 0 
+        AND date(eventDateTime / 1000, 'unixepoch', 'localtime') = date('now', 'localtime')
+        ORDER BY eventDateTime DESC
+    """)
+    fun getTodayEntries(childId: String): Flow<List<DiaryEntryEntity>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(entry: DiaryEntryEntity)
 

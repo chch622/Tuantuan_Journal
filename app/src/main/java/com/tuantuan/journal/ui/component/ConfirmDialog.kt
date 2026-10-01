@@ -5,6 +5,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
+import com.tuantuan.journal.R
 
 /**
  * 确认对话框组件 — ERROR_HANDLING.md §4.2
@@ -13,24 +15,24 @@ import androidx.compose.runtime.Composable
  *
  * 规范：
  * - 不可逆操作使用红色确认按钮（isDestructive = true）
- * - 认文案清晰说明后果
+ * - 确认文案清晰说明后果
  * - 默认焦点在取消按钮上
  * - 圆角使用 ExtraLarge（Dialog 规范）
  *
  * @param title 对话框标题
  * @param message 对话框内容描述
- * @param confirmText 认按钮文案，默认 "确认"
+ * @param confirmText 确认按钮文案，默认 "确认"
  * @param dismissText 取消按钮文案，默认 "取消"
  * @param isDestructive 是否为破坏性操作（红色确认按钮）
- * @param onConfirm 认回调
+ * @param onConfirm 确认回调
  * @param onDismiss 取消回调
  */
 @Composable
 fun ConfirmDialog(
     title: String,
     message: String,
-    confirmText: String = "确认",
-    dismissText: String = "取消",
+    confirmText: String = stringResource(R.string.confirm),
+    dismissText: String = stringResource(R.string.cancel),
     isDestructive: Boolean = false,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit
@@ -78,7 +80,7 @@ fun ConfirmDialog(
  *
  * @param itemName 被删除项目的名称，用于提示文案
  * @param isPermanent 是否为永久删除（不可恢复），影响提示文案
- * @param onConfirm 硠除确认回调
+ * @param onConfirm 删除确认回调
  * @param onDismiss 取消回调
  */
 @Composable
@@ -89,14 +91,14 @@ fun DeleteConfirmDialog(
     onDismiss: () -> Unit
 ) {
     ConfirmDialog(
-        title = "确认删除",
+        title = stringResource(R.string.confirm_delete_title),
         message = if (isPermanent) {
-            "删除 $itemName 后将无法恢复，确定要删除吗？"
+            stringResource(R.string.confirm_delete_permanent, itemName)
         } else {
-            "确定删除 $itemName 吗？"
+            stringResource(R.string.confirm_delete_temp, itemName)
         },
-        confirmText = "删除",
-        dismissText = "取消",
+        confirmText = stringResource(R.string.delete),
+        dismissText = stringResource(R.string.cancel),
         isDestructive = true,
         onConfirm = onConfirm,
         onDismiss = onDismiss

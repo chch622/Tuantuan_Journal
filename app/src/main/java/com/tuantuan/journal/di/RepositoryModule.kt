@@ -1,5 +1,7 @@
 package com.tuantuan.journal.di
 
+import com.tuantuan.journal.data.local.file.MediaFileManager
+import com.tuantuan.journal.data.local.file.MediaFileService
 import com.tuantuan.journal.data.repository.ChildRepositoryImpl
 import com.tuantuan.journal.data.repository.DiaryRepositoryImpl
 import com.tuantuan.journal.data.repository.MediaRepositoryImpl
@@ -33,4 +35,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindTagRepository(impl: TagRepositoryImpl): TagRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindMediaFileService(impl: MediaFileManager): MediaFileService
 }

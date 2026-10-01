@@ -11,10 +11,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.tuantuan.journal.R
 import com.tuantuan.journal.ui.navigation.BottomNavItem
 import com.tuantuan.journal.ui.navigation.TuantuanNavigation
 import com.tuantuan.journal.ui.navigation.bottomNavItems
@@ -59,12 +61,12 @@ fun TuantuanApp() {
                                     imageVector = if (currentDestination?.hierarchy?.any {
                                             it.route == item.route
                                         } == true) item.selectedIcon else item.unselectedIcon,
-                                    contentDescription = item.label.ifEmpty { "添加" }
+                                    contentDescription = if (item.labelResId != 0) stringResource(item.labelResId) else stringResource(R.string.add)
                                 )
                             },
                             label = {
-                                if (item.label.isNotEmpty()) {
-                                    Text(item.label)
+                                if (item.labelResId != 0) {
+                                    Text(stringResource(item.labelResId))
                                 }
                             },
                             colors = NavigationBarItemDefaults.colors(

@@ -34,8 +34,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.tuantuan.journal.R
+import com.tuantuan.journal.ui.model.resolveMessage
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,7 +56,7 @@ fun ChildAddScreen(
     }
 
     ChildFormContent(
-        title = "添加儿童",
+        title = stringResource(R.string.child_add),
         formState = formState,
         onNameChange = { v -> viewModel.updateFormState { it.copy(name = v) } },
         onNicknameChange = { v -> viewModel.updateFormState { it.copy(nickname = v) } },
@@ -96,7 +99,7 @@ fun ChildEditScreen(
     }
 
     ChildFormContent(
-        title = "编辑儿童",
+        title = stringResource(R.string.child_edit),
         formState = formState,
         onNameChange = { v -> viewModel.updateFormState { it.copy(name = v) } },
         onNicknameChange = { v -> viewModel.updateFormState { it.copy(nickname = v) } },
@@ -133,7 +136,12 @@ private fun ChildFormContent(
 ) {
     var genderExpanded by remember { mutableStateOf(false) }
     val genderOptions = listOf("", "MALE", "FEMALE", "OTHER")
-    val genderLabels = mapOf("" to "请选择", "MALE" to "男", "FEMALE" to "女", "OTHER" to "其他")
+    val genderLabels = mapOf(
+        "" to stringResource(R.string.child_gender_select),
+        "MALE" to stringResource(R.string.child_gender_male),
+        "FEMALE" to stringResource(R.string.child_gender_female),
+        "OTHER" to stringResource(R.string.child_gender_other)
+    )
 
     Scaffold(
         topBar = {
@@ -141,7 +149,7 @@ private fun ChildFormContent(
                 title = { Text(title) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "返回")
+                        Icon(Icons.Default.ArrowBack, contentDescription = stringResource(R.string.back))
                     }
                 }
             )
@@ -154,24 +162,24 @@ private fun ChildFormContent(
             OutlinedTextField(
                 value = formState.name,
                 onValueChange = onNameChange,
-                label = { Text("姓名 *") },
+                label = { Text(stringResource(R.string.child_name_required)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
             OutlinedTextField(
                 value = formState.nickname,
                 onValueChange = onNicknameChange,
-                label = { Text("小名") },
+                label = { Text(stringResource(R.string.child_nickname_label)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
             OutlinedTextField(
                 value = formState.birthDate,
                 onValueChange = onBirthDateChange,
-                label = { Text("出生日期 (yyyy-MM-dd)") },
+                label = { Text(stringResource(R.string.child_birth_date_format)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
-                placeholder = { Text("如：2023-01-15") }
+                placeholder = { Text(stringResource(R.string.child_birth_date_hint)) }
             )
 
             ExposedDropdownMenuBox(
@@ -182,7 +190,7 @@ private fun ChildFormContent(
                     value = genderLabels[formState.gender] ?: "",
                     onValueChange = {},
                     readOnly = true,
-                    label = { Text("性别") },
+                    label = { Text(stringResource(R.string.child_gender)) },
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = genderExpanded) },
                     modifier = Modifier.fillMaxWidth().menuAnchor(MenuAnchorType.PrimaryNotEditable)
                 )
@@ -203,14 +211,14 @@ private fun ChildFormContent(
                 OutlinedTextField(
                     value = formState.birthWeight,
                     onValueChange = onBirthWeightChange,
-                    label = { Text("出生体重(kg)") },
+                    label = { Text(stringResource(R.string.child_birth_weight_unit)) },
                     modifier = Modifier.weight(1f),
                     singleLine = true
                 )
                 OutlinedTextField(
                     value = formState.birthHeight,
                     onValueChange = onBirthHeightChange,
-                    label = { Text("出生身高(cm)") },
+                    label = { Text(stringResource(R.string.child_birth_height_unit)) },
                     modifier = Modifier.weight(1f),
                     singleLine = true
                 )
@@ -219,27 +227,27 @@ private fun ChildFormContent(
             OutlinedTextField(
                 value = formState.bloodType,
                 onValueChange = onBloodTypeChange,
-                label = { Text("血型") },
+                label = { Text(stringResource(R.string.child_blood_type)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
             OutlinedTextField(
                 value = formState.birthPlace,
                 onValueChange = onBirthPlaceChange,
-                label = { Text("出生地") },
+                label = { Text(stringResource(R.string.child_birth_place)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
             OutlinedTextField(
                 value = formState.notes,
                 onValueChange = onNotesChange,
-                label = { Text("备注") },
+                label = { Text(stringResource(R.string.child_notes)) },
                 modifier = Modifier.fillMaxWidth().height(120.dp),
                 maxLines = 5
             )
 
             formState.error?.let {
-                Text(it.displayMessage, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
+                Text(it.resolveMessage(), color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
             }
 
             Spacer(Modifier.height(8.dp))
@@ -252,7 +260,7 @@ private fun ChildFormContent(
                 if (isSaving) {
                     CircularProgressIndicator(modifier = Modifier.padding(end = 8.dp))
                 }
-                Text("保存")
+                Text(stringResource(R.string.save))
             }
         }
     }

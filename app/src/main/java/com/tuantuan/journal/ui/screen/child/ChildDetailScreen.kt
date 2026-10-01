@@ -44,8 +44,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.tuantuan.journal.R
 import com.tuantuan.journal.domain.model.Child
 import com.tuantuan.journal.domain.model.Gender
 import java.time.LocalDate
@@ -71,19 +73,19 @@ fun ChildDetailScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(state.child?.nickname ?: "儿童详情") },
+                title = { Text(state.child?.nickname ?: stringResource(R.string.child_detail)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "返回")
+                        Icon(Icons.Default.ArrowBack, contentDescription = stringResource(R.string.back))
                     }
                 },
                 actions = {
                     IconButton(onClick = onEditClick) {
-                        Icon(Icons.Default.Edit, contentDescription = "编辑")
+                        Icon(Icons.Default.Edit, contentDescription = stringResource(R.string.edit))
                     }
                     onDeleteClick?.let {
                         IconButton(onClick = { showDeleteDialog = true }) {
-                            Icon(Icons.Default.Delete, contentDescription = "删除")
+                            Icon(Icons.Default.Delete, contentDescription = stringResource(R.string.delete))
                         }
                     }
                 }
@@ -96,7 +98,7 @@ fun ChildDetailScreen(
             )
         } else if (state.child == null) {
             TtErrorState(
-                message = "未找到儿童信息",
+                message = stringResource(R.string.child_not_found),
                 modifier = Modifier.fillMaxSize().padding(padding)
             )
         } else {
@@ -114,38 +116,43 @@ fun ChildDetailScreen(
                     Column {
                         Text(child.name, style = MaterialTheme.typography.headlineMedium)
                         if (child.nickname != child.name) {
-                            Text("小名：${child.nickname}", style = MaterialTheme.typography.bodyMedium)
+                            Text(
+                                stringResource(R.string.child_nickname, child.nickname),
+                                style = MaterialTheme.typography.bodyMedium
+                            )
                         }
                     }
                 }
 
                 // 详细信息
-                CardSection("基本信息") {
-                    InfoRow("出生日期", child.birthDate.format(DateTimeFormatter.ofPattern("yyyy年MM月dd日")))
+                CardSection(stringResource(R.string.child_basic_info)) {
+                    InfoRow(stringResource(R.string.child_birth_date), child.birthDate.format(DateTimeFormatter.ofPattern(stringResource(R.string.date_format_full))))
                     val age = runCatching {
-                        Period.between(child.birthDate, LocalDate.now()).let { "${it.years}岁${it.months}个月" }
+                        Period.between(child.birthDate, LocalDate.now()).let {
+                            stringResource(R.string.child_age_format, it.years, it.months)
+                        }
                     }.getOrDefault("")
-                    if (age.isNotEmpty()) InfoRow("年龄", age)
+                    if (age.isNotEmpty()) InfoRow(stringResource(R.string.child_age), age)
                     child.gender?.let { gender ->
-                        InfoRow("性别", when (gender) {
-                            Gender.MALE -> "男"
-                            Gender.FEMALE -> "女"
-                            else -> "其他"
+                        InfoRow(stringResource(R.string.child_gender), when (gender) {
+                            Gender.MALE -> stringResource(R.string.child_gender_male)
+                            Gender.FEMALE -> stringResource(R.string.child_gender_female)
+                            else -> stringResource(R.string.child_gender_other)
                         })
                     }
                 }
 
                 child.birthWeight?.let {
-                    CardSection("出生信息") {
-                        InfoRow("出生体重", "${it}kg")
-                        child.birthHeight?.let { h -> InfoRow("出生身高", "${h}cm") }
-                        child.bloodType?.let { b -> InfoRow("血型", b) }
-                        child.birthPlace?.let { p -> InfoRow("出生地", p) }
+                    CardSection(stringResource(R.string.child_birth_info)) {
+                        InfoRow(stringResource(R.string.child_birth_weight), "${it}kg")
+                        child.birthHeight?.let { h -> InfoRow(stringResource(R.string.child_birth_height), "${h}cm") }
+                        child.bloodType?.let { b -> InfoRow(stringResource(R.string.child_blood_type), b) }
+                        child.birthPlace?.let { p -> InfoRow(stringResource(R.string.child_birth_place), p) }
                     }
                 }
 
                 child.notes?.let {
-                    CardSection("备注") {
+                    CardSection(stringResource(R.string.child_notes)) {
                         Text(it, style = MaterialTheme.typography.bodyMedium)
                     }
                 }
@@ -157,14 +164,14 @@ fun ChildDetailScreen(
                 ) {
                     Icon(Icons.Default.Add, contentDescription = null)
                     Spacer(Modifier.width(8.dp))
-                    Text("写日记")
+                    Text(stringResource(R.string.child_write_diary))
                 }
 
                 OutlinedButton(
                     onClick = onViewDiariesClick,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("查看所有日记")
+                    Text(stringResource(R.string.child_view_all_diaries))
                 }
             }
         }
@@ -173,7 +180,7 @@ fun ChildDetailScreen(
     // 删除确认对话框
     if (showDeleteDialog) {
         DeleteConfirmDialog(
-            itemName = "此儿童档案及所有关联日记",
+            itemName = stringResource(R.string.child_delete_confirm_item),
             isPermanent = true,
             onConfirm = {
                 showDeleteDialog = false

@@ -9,6 +9,7 @@ interface DiaryRepository {
     fun searchEntries(childId: String, query: String): Flow<List<DiaryEntry>>
     fun getFavoriteEntries(childId: String): Flow<List<DiaryEntry>>
     fun getRecentEntries(childId: String, limit: Int = 10): Flow<List<DiaryEntry>>
+    fun getTodayEntries(childId: String): Flow<List<DiaryEntry>>
     suspend fun createEntry(entry: DiaryEntry): String
     suspend fun updateEntry(entry: DiaryEntry)
     suspend fun deleteEntry(id: String)

@@ -36,9 +36,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.tuantuan.journal.R
 import com.tuantuan.journal.domain.model.DiaryEntry
 import com.tuantuan.journal.ui.component.TtEmptyState
 import com.tuantuan.journal.ui.component.TtLoadingIndicator
@@ -61,22 +63,22 @@ fun DiaryListScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("日记列表") },
+                title = { Text(stringResource(R.string.diary_list)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "返回")
+                        Icon(Icons.Default.ArrowBack, contentDescription = stringResource(R.string.back))
                     }
                 },
                 actions = {
                     IconButton(onClick = onSearchClick) {
-                        Icon(Icons.Default.Search, contentDescription = "搜索")
+                        Icon(Icons.Default.Search, contentDescription = stringResource(R.string.search))
                     }
                 }
             )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = onAddDiaryClick) {
-                Icon(Icons.Default.Add, contentDescription = "写日记")
+                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.diary_write))
             }
         }
     ) { padding ->
@@ -86,10 +88,10 @@ fun DiaryListScreen(
             )
         } else if (state.entries.isEmpty()) {
             TtEmptyState(
-                title = "还没有日记",
-                description = "点击右下角 + 开始写第一篇",
+                title = stringResource(R.string.diary_empty_title),
+                description = stringResource(R.string.diary_empty_desc),
                 icon = Icons.Outlined.MenuBook,
-                actionLabel = "写日记",
+                actionLabel = stringResource(R.string.diary_write),
                 onAction = onAddDiaryClick,
                 modifier = Modifier.fillMaxSize().padding(padding)
             )
@@ -117,7 +119,7 @@ private fun DiaryCard(
     onClick: () -> Unit,
     onToggleFavorite: () -> Unit
 ) {
-    val dateFormatter = DateTimeFormatter.ofPattern("yyyy年MM月dd日")
+    val dateFormatter = DateTimeFormatter.ofPattern(stringResource(R.string.date_format_full))
     val date = entry.eventDateTime.atZone(ZoneId.systemDefault()).format(dateFormatter)
 
     Card(
@@ -135,7 +137,7 @@ private fun DiaryCard(
                 IconButton(onClick = onToggleFavorite) {
                     Icon(
                         if (entry.isFavorite) Icons.Default.Favorite else Icons.Outlined.FavoriteBorder,
-                        contentDescription = "收藏",
+                        contentDescription = stringResource(R.string.diary_favorite),
                         tint = if (entry.isFavorite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }

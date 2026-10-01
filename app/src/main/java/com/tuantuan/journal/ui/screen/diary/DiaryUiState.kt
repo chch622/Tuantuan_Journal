@@ -1,5 +1,6 @@
 package com.tuantuan.journal.ui.screen.diary
 
+import android.net.Uri
 import com.tuantuan.journal.domain.model.DiaryEntry
 import com.tuantuan.journal.domain.model.Tag
 import com.tuantuan.journal.ui.model.UiError
@@ -26,6 +27,7 @@ data class DiaryFormState(
     val isFavorite: Boolean = false,
     val selectedTagIds: Set<String> = emptySet(),
     val availableTags: List<Tag> = emptyList(),
+    val selectedMediaUris: List<Uri> = emptyList(),
     val isSaving: Boolean = false,
     val savedSuccessfully: Boolean = false,
     val error: UiError? = null

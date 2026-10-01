@@ -1,5 +1,6 @@
 package com.tuantuan.journal.ui.screen.diary
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tuantuan.journal.domain.model.DiaryEntry
@@ -12,8 +13,11 @@ import com.tuantuan.journal.domain.usecase.diary.GetDiaryEntriesUseCase
 import com.tuantuan.journal.domain.usecase.diary.SaveDiaryEntryUseCase
 import com.tuantuan.journal.domain.usecase.diary.SearchDiaryEntriesUseCase
 import com.tuantuan.journal.domain.usecase.diary.ToggleFavoriteUseCase
+import com.tuantuan.journal.domain.usecase.media.SaveMediaUseCase
 import com.tuantuan.journal.domain.usecase.tag.GetTagsUseCase
 import com.tuantuan.journal.domain.usecase.tag.ManageEntryTagUseCase
+import com.tuantuan.journal.domain.model.MediaType
+import com.tuantuan.journal.R
 import com.tuantuan.journal.ui.model.UiError
 import com.tuantuan.journal.ui.model.toUiError
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -38,7 +42,8 @@ class DiaryViewModel @Inject constructor(
     private val toggleFavoriteUseCase: ToggleFavoriteUseCase,
     private val deleteDiaryEntryUseCase: DeleteDiaryEntryUseCase,
     private val getTagsUseCase: GetTagsUseCase,
-    private val manageEntryTagUseCase: ManageEntryTagUseCase
+    private val manageEntryTagUseCase: ManageEntryTagUseCase,
+    private val saveMediaUseCase: SaveMediaUseCase
 ) : ViewModel() {
 
     private val _listState = MutableStateFlow(DiaryListUiState())
@@ -106,7 +111,7 @@ class DiaryViewModel @Inject constructor(
     fun createEntry(childId: String) {
         val state = _formState.value
         if (state.content.isBlank()) {
-            _formState.value = state.copy(error = UiError.ValidationError("请输入日记内容"))
+            _formState.value = state.copy(error = UiError.ValidationError(R.string.error_validation_content))
             return
         }
         viewModelScope.launch {
@@ -137,6 +142,14 @@ class DiaryViewModel @Inject constructor(
                 // 保存标签关联
                 state.selectedTagIds.forEach { tagId ->
                     manageEntryTagUseCase.add(entry.id, tagId)
+                }
+                // 保存选中的媒体文件
+                state.selectedMediaUris.forEachIndexed { index, uri ->
+                    try {
+                        saveMediaUseCase(uri, entry.id, MediaType.PHOTO)
+                    } catch (_: Exception) {
+                        // 单个媒体保存失败不影响整体流程
+                    }
                 }
                 _formState.value = state.copy(isSaving = false, savedSuccessfully = true)
             } catch (e: Exception) {
@@ -176,6 +189,14 @@ class DiaryViewModel @Inject constructor(
                 state.selectedTagIds.forEach { tagId ->
                     manageEntryTagUseCase.add(updated.id, tagId)
                 }
+                // 保存新添加的媒体文件
+                state.selectedMediaUris.forEachIndexed { index, uri ->
+                    try {
+                        saveMediaUseCase(uri, updated.id, MediaType.PHOTO)
+                    } catch (_: Exception) {
+                        // 单个媒体保存失败不影响整体流程
+                    }
+                }
                 _formState.value = state.copy(isSaving = false, savedSuccessfully = true)
             } catch (e: Exception) {
                 _formState.value = state.copy(isSaving = false, error = e.toUiError())
@@ -214,6 +235,27 @@ class DiaryViewModel @Inject constructor(
         _formState.value = _formState.value.copy(
             selectedTagIds = if (tagId in current) current - tagId else current + tagId
         )
+    }
+
+    /** 添加选中的照片 URI */
+    fun addSelectedPhotos(uris: List<Uri>) {
+        val current = _formState.value.selectedMediaUris
+        // 最多 10 张照片（MEDIA_STORAGE.md 限制）
+        val remaining = 10 - current.size
+        if (remaining <= 0) return
+        _formState.value = _formState.value.copy(
+            selectedMediaUris = current + uris.take(remaining)
+        )
+    }
+
+    /** 移除选中的照片 URI */
+    fun removeSelectedPhoto(index: Int) {
+        val current = _formState.value.selectedMediaUris
+        if (index in current.indices) {
+            _formState.value = _formState.value.copy(
+                selectedMediaUris = current.toMutableList().apply { removeAt(index) }
+            )
+        }
     }
 
     fun populateForm(entry: DiaryEntry) {

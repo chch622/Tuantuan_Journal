@@ -16,4 +16,7 @@ class GetDiaryEntriesUseCase @Inject constructor(
 
     fun recent(childId: String, limit: Int = 10): Flow<List<DiaryEntry>> =
         repository.getRecentEntries(childId, limit)
+
+    fun today(childId: String): Flow<List<DiaryEntry>> =
+        repository.getTodayEntries(childId)
 }

@@ -1,5 +1,9 @@
 package com.tuantuan.journal.ui.screen.diary
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,13 +20,13 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -40,11 +44,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.tuantuan.journal.R
 import com.tuantuan.journal.domain.model.Mood
 import com.tuantuan.journal.domain.model.Weather
+import com.tuantuan.journal.ui.model.resolveMessage
+import com.tuantuan.journal.ui.component.TtMediaAddBar
+import com.tuantuan.journal.ui.component.TtSelectedPhotosBar
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -59,6 +68,15 @@ fun DiaryAddScreen(
     val formState by viewModel.formState.collectAsState()
     var moodExpanded by remember { mutableStateOf(false) }
     var weatherExpanded by remember { mutableStateOf(false) }
+
+    // Photo Picker — MEDIA_UX.md §4.2
+    val photoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickMultipleVisualMedia(10)
+    ) { uris: List<Uri> ->
+        if (uris.isNotEmpty()) {
+            viewModel.addSelectedPhotos(uris)
+        }
+    }
 
     // 初始化日期为今天
     LaunchedEffect(Unit) {
@@ -77,10 +95,10 @@ fun DiaryAddScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("写日记") },
+                title = { Text(stringResource(R.string.diary_add)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "返回")
+                        Icon(Icons.Default.ArrowBack, contentDescription = stringResource(R.string.back))
                     }
                 }
             )
@@ -98,7 +116,7 @@ fun DiaryAddScreen(
             OutlinedTextField(
                 value = formState.title,
                 onValueChange = { viewModel.updateFormState { s -> s.copy(title = it) } },
-                label = { Text("标题（可选）") },
+                label = { Text(stringResource(R.string.diary_title_optional)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
@@ -107,9 +125,9 @@ fun DiaryAddScreen(
             OutlinedTextField(
                 value = formState.eventDateTime,
                 onValueChange = { viewModel.updateFormState { s -> s.copy(eventDateTime = it) } },
-                label = { Text("日期") },
+                label = { Text(stringResource(R.string.diary_date)) },
                 modifier = Modifier.fillMaxWidth(),
-                placeholder = { Text("yyyy-MM-dd") },
+                placeholder = { Text(stringResource(R.string.diary_date_hint)) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 singleLine = true
             )
@@ -123,7 +141,7 @@ fun DiaryAddScreen(
                     value = formState.mood,
                     onValueChange = {},
                     readOnly = true,
-                    label = { Text("心情") },
+                    label = { Text(stringResource(R.string.diary_mood)) },
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = moodExpanded) },
                     modifier = Modifier.fillMaxWidth().menuAnchor(MenuAnchorType.PrimaryNotEditable)
                 )
@@ -132,7 +150,7 @@ fun DiaryAddScreen(
                     onDismissRequest = { moodExpanded = false }
                 ) {
                     DropdownMenuItem(
-                        text = { Text("不选择") },
+                        text = { Text(stringResource(R.string.diary_mood_none)) },
                         onClick = {
                             viewModel.updateFormState { it.copy(mood = "") }
                             moodExpanded = false
@@ -159,7 +177,7 @@ fun DiaryAddScreen(
                     value = formState.weather,
                     onValueChange = {},
                     readOnly = true,
-                    label = { Text("天气") },
+                    label = { Text(stringResource(R.string.diary_weather)) },
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = weatherExpanded) },
                     modifier = Modifier.fillMaxWidth().menuAnchor(MenuAnchorType.PrimaryNotEditable)
                 )
@@ -168,7 +186,7 @@ fun DiaryAddScreen(
                     onDismissRequest = { weatherExpanded = false }
                 ) {
                     DropdownMenuItem(
-                        text = { Text("不选择") },
+                        text = { Text(stringResource(R.string.diary_weather_none)) },
                         onClick = {
                             viewModel.updateFormState { it.copy(weather = "") }
                             weatherExpanded = false
@@ -190,7 +208,7 @@ fun DiaryAddScreen(
             OutlinedTextField(
                 value = formState.location,
                 onValueChange = { viewModel.updateFormState { s -> s.copy(location = it) } },
-                label = { Text("地点（可选）") },
+                label = { Text(stringResource(R.string.diary_location_optional)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
@@ -199,7 +217,7 @@ fun DiaryAddScreen(
             if (formState.availableTags.isNotEmpty()) {
                 Column {
                     Text(
-                        "标签",
+                        stringResource(R.string.diary_tags),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -212,18 +230,45 @@ fun DiaryAddScreen(
                 }
             }
 
+            // 媒体添加栏 — MEDIA_UX.md §4
+            TtMediaAddBar(
+                onPhotoClick = {
+                    photoPickerLauncher.launch(
+                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                    )
+                }
+            )
+
+            // 已选照片预览 — MEDIA_UX.md §4.2
+            if (formState.selectedMediaUris.isNotEmpty()) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(R.string.media_selected_count, formState.selectedMediaUris.size),
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                TtSelectedPhotosBar(
+                    photoUris = formState.selectedMediaUris,
+                    onRemovePhoto = { viewModel.removeSelectedPhoto(it) }
+                )
+            }
+
             // 日记内容（必填）
             OutlinedTextField(
                 value = formState.content,
                 onValueChange = { viewModel.updateFormState { s -> s.copy(content = it) } },
-                label = { Text("日记内容 *") },
+                label = { Text(stringResource(R.string.diary_content_required)) },
                 modifier = Modifier.fillMaxWidth().height(200.dp),
                 isError = formState.error != null && formState.content.isBlank()
             )
 
             // 错误提示
             formState.error?.let { error ->
-                Text(error.displayMessage, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
+                Text(error.resolveMessage(), color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
             }
 
             Spacer(Modifier.height(8.dp))
@@ -232,7 +277,6 @@ fun DiaryAddScreen(
             Button(
                 onClick = {
                     viewModel.createEntry(childId)
-                    // 简单处理：延迟后检查是否保存成功
                 },
                 modifier = Modifier.fillMaxWidth(),
                 enabled = !formState.isSaving && formState.content.isNotBlank()
@@ -240,29 +284,31 @@ fun DiaryAddScreen(
                 if (formState.isSaving) {
                     CircularProgressIndicator(modifier = Modifier.padding(end = 8.dp))
                 }
-                Text("保存日记")
+                Text(stringResource(R.string.diary_save))
             }
         }
     }
 }
 
+@Composable
 private fun moodDisplayName(mood: Mood): String = when (mood) {
-    Mood.HAPPY -> "开心 😊"
-    Mood.CALM -> "平静 😌"
-    Mood.EXCITED -> "兴奋 🤩"
-    Mood.SAD -> "难过 😢"
-    Mood.ANGRY -> "生气 😠"
-    Mood.SICK -> "不舒服 🤒"
-    Mood.TIRED -> "疲惫 😴"
+    Mood.HAPPY -> stringResource(R.string.mood_happy)
+    Mood.CALM -> stringResource(R.string.mood_calm)
+    Mood.EXCITED -> stringResource(R.string.mood_excited)
+    Mood.SAD -> stringResource(R.string.mood_sad)
+    Mood.ANGRY -> stringResource(R.string.mood_angry)
+    Mood.SICK -> stringResource(R.string.mood_sick)
+    Mood.TIRED -> stringResource(R.string.mood_tired)
 }
 
+@Composable
 private fun weatherDisplayName(weather: Weather): String = when (weather) {
-    Weather.SUNNY -> "晴天 ☀️"
-    Weather.CLOUDY -> "多云 ☁️"
-    Weather.RAINY -> "下雨 🌧️"
-    Weather.SNOWY -> "下雪 ❄️"
-    Weather.WINDY -> "刮风 💨"
-    Weather.FOGGY -> "雾天 🌫️"
+    Weather.SUNNY -> stringResource(R.string.weather_sunny)
+    Weather.CLOUDY -> stringResource(R.string.weather_cloudy)
+    Weather.RAINY -> stringResource(R.string.weather_rainy)
+    Weather.SNOWY -> stringResource(R.string.weather_snowy)
+    Weather.WINDY -> stringResource(R.string.weather_windy)
+    Weather.FOGGY -> stringResource(R.string.weather_foggy)
 }
 
 @OptIn(ExperimentalLayoutApi::class)

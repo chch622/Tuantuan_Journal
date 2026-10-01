@@ -34,23 +34,47 @@ class HomeViewModel @Inject constructor(
                     _state.value = _state.value.copy(isLoading = false, error = e.toUiError())
                 }
                 .collect { children ->
+                    val currentSelectedId = _state.value.selectedChildId
+                    // 自动选中第一个儿童（如果没有选中的话）
+                    val autoSelectedId = currentSelectedId
+                        ?: children.firstOrNull()?.id
+
                     _state.value = _state.value.copy(
                         children = children,
+                        selectedChildId = autoSelectedId,
                         isLoading = false
                     )
-                    // Load recent entries for each child
+
+                    // 为每个儿童加载今日和最近日记
                     children.forEach { child ->
-                        launch {
-                            getDiaryEntriesUseCase.recent(child.id, 5)
-                                .catch { /* ignore individual failures */ }
-                                .collect { entries ->
-                                    val current = _state.value.recentEntries.toMutableMap()
-                                    current[child.id] = entries
-                                    _state.value = _state.value.copy(recentEntries = current)
-                                }
-                        }
+                        launch { loadTodayEntries(child.id) }
+                        launch { loadRecentEntries(child.id) }
                     }
                 }
         }
+    }
+
+    fun selectChild(childId: String) {
+        _state.value = _state.value.copy(selectedChildId = childId)
+    }
+
+    private suspend fun loadTodayEntries(childId: String) {
+        getDiaryEntriesUseCase.today(childId)
+            .catch { /* ignore individual failures */ }
+            .collect { entries ->
+                val current = _state.value.todayEntries.toMutableMap()
+                current[childId] = entries
+                _state.value = _state.value.copy(todayEntries = current)
+            }
+    }
+
+    private suspend fun loadRecentEntries(childId: String) {
+        getDiaryEntriesUseCase.recent(childId, 5)
+            .catch { /* ignore individual failures */ }
+            .collect { entries ->
+                val current = _state.value.recentEntries.toMutableMap()
+                current[childId] = entries
+                _state.value = _state.value.copy(recentEntries = current)
+            }
     }
 }

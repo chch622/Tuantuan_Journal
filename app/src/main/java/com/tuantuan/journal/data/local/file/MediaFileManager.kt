@@ -33,7 +33,7 @@ import javax.inject.Singleton
 @Singleton
 class MediaFileManager @Inject constructor(
     @param:ApplicationContext private val context: Context
-) {
+) : MediaFileService {
 
     companion object {
         private const val MEDIA_DIR = "media"
@@ -68,7 +68,7 @@ class MediaFileManager @Inject constructor(
      * 5. 生成缩略图（照片/视频）
      * 6. 返回文件信息
      */
-    suspend fun saveMedia(
+    override suspend fun saveMedia(
         sourceUri: Uri,
         entryId: String,
         mediaType: MediaType
@@ -190,7 +190,7 @@ class MediaFileManager @Inject constructor(
             throw DomainException.FileTooLarge(maxSize, size)
         }
         if (size <= 0) {
-            throw DomainException.ValidationError("fileSize", "文件大小无效")
+            throw DomainException.ValidationError("fileSize", "Invalid file size")
         }
     }
 
@@ -227,7 +227,7 @@ class MediaFileManager @Inject constructor(
             FileOutputStream(targetFile).use { output ->
                 input.copyTo(output)
             }
-        } ?: throw DomainException.ValidationError("file", "无法读取文件")
+        } ?: throw DomainException.ValidationError("file", "Unable to read file")
     }
 
     private fun generateThumbnail(file: File, mediaType: MediaType, uuid: String): String? {

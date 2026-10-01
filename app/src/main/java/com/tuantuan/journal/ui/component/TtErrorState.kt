@@ -14,9 +14,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.tuantuan.journal.R
 import com.tuantuan.journal.ui.model.UiError
+import com.tuantuan.journal.ui.model.resolveMessage
 import com.tuantuan.journal.ui.theme.TuantuanSpacing
 
 /**
@@ -45,7 +48,7 @@ fun TtErrorState(
     onRetry: () -> Unit,
     modifier: Modifier = Modifier,
     icon: ImageVector = Icons.Outlined.ErrorOutline,
-    retryLabel: String = "重试",
+    retryLabel: String = stringResource(R.string.retry),
     detail: String? = null
 ) {
     Column(
@@ -65,7 +68,7 @@ fun TtErrorState(
 
         // 错误标题 — OnSurface 色，TitleMedium
         Text(
-            text = error.displayMessage,
+            text = error.resolveMessage(),
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurface
         )
@@ -98,7 +101,7 @@ fun TtErrorState(
     message: String,
     onRetry: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
-    retryLabel: String = "重试"
+    retryLabel: String = stringResource(R.string.retry)
 ) {
     Column(
         modifier = modifier,

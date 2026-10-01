@@ -1,6 +1,5 @@
 package com.tuantuan.journal.domain.usecase.media
 
-import com.tuantuan.journal.data.local.file.MediaFileManager
 import com.tuantuan.journal.domain.repository.MediaRepository
 import javax.inject.Inject
 
@@ -14,8 +13,7 @@ import javax.inject.Inject
  * 遵循 ARCHITECTURE.md：Domain层UseCase，协调Data层操作。
  */
 class DeleteMediaUseCase @Inject constructor(
-    private val mediaRepository: MediaRepository,
-    private val mediaFileManager: MediaFileManager
+    private val mediaRepository: MediaRepository
 ) {
     /**
      * 软删除媒体文件。

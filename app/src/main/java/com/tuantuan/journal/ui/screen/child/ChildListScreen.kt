@@ -37,8 +37,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.tuantuan.journal.R
 import com.tuantuan.journal.domain.model.Child
 import com.tuantuan.journal.ui.component.TtEmptyState
 import com.tuantuan.journal.ui.component.TtLoadingIndicator
@@ -51,7 +53,7 @@ fun ChildListScreen(
     onChildClick: (String) -> Unit,
     onAddChildClick: () -> Unit,
     onBackClick: () -> Unit,
-    title: String = "儿童档案",
+    title: String = stringResource(R.string.child_list),
     viewModel: ChildViewModel = hiltViewModel()
 ) {
     val state by viewModel.listState.collectAsState()
@@ -62,14 +64,14 @@ fun ChildListScreen(
                 title = { Text(title) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "返回")
+                        Icon(Icons.Default.ArrowBack, contentDescription = stringResource(R.string.back))
                     }
                 }
             )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = onAddChildClick) {
-                Icon(Icons.Default.Add, contentDescription = "添加儿童")
+                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.add_child))
             }
         }
     ) { padding ->
@@ -79,10 +81,10 @@ fun ChildListScreen(
             )
         } else if (state.children.isEmpty()) {
             TtEmptyState(
-                title = "还没有儿童档案",
-                description = "点击右下角 + 添加第一个档案",
+                title = stringResource(R.string.child_empty_title),
+                description = stringResource(R.string.child_empty_desc),
                 icon = Icons.Outlined.ChildCare,
-                actionLabel = "添加儿童",
+                actionLabel = stringResource(R.string.add_child),
                 onAction = onAddChildClick,
                 modifier = Modifier.fillMaxSize().padding(padding)
             )
@@ -105,7 +107,9 @@ fun ChildListScreen(
                             Column(Modifier.weight(1f)) {
                                 Text(child.nickname, style = MaterialTheme.typography.titleSmall)
                                 val age = runCatching {
-                                    Period.between(child.birthDate, LocalDate.now()).let { "${it.years}岁${it.months}月" }
+                                    Period.between(child.birthDate, LocalDate.now()).let {
+                                        stringResource(R.string.child_age_format, it.years, it.months)
+                                    }
                                 }.getOrDefault("")
                                 if (age.isNotEmpty()) Text(age, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             }

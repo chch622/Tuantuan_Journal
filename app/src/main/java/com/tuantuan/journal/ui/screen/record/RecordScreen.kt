@@ -15,7 +15,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.tuantuan.journal.R
 
 /**
  * 记录页面 — Phase 2 实现。
@@ -39,13 +41,13 @@ fun RecordScreen() {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "日记记录",
+                text = stringResource(R.string.record_title),
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onSurface
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "即将推出",
+                text = stringResource(R.string.coming_soon),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )

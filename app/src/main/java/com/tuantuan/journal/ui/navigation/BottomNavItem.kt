@@ -1,5 +1,6 @@
 package com.tuantuan.journal.ui.navigation
 
+import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Book
@@ -11,6 +12,7 @@ import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Timeline
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.tuantuan.journal.R
 
 /**
  * 底部导航项定义。
@@ -20,41 +22,41 @@ import androidx.compose.ui.graphics.vector.ImageVector
  */
 sealed class BottomNavItem(
     val route: String,
-    val label: String,
+    @StringRes val labelResId: Int,
     val selectedIcon: ImageVector,
     val unselectedIcon: ImageVector
 ) {
     data object Home : BottomNavItem(
         route = "bottom_home",
-        label = "首页",
+        labelResId = R.string.nav_home,
         selectedIcon = Icons.Filled.Home,
         unselectedIcon = Icons.Outlined.Home
     )
 
     data object Record : BottomNavItem(
         route = "bottom_record",
-        label = "记录",
+        labelResId = R.string.nav_record,
         selectedIcon = Icons.Filled.Book,
         unselectedIcon = Icons.Outlined.Book
     )
 
     data object Add : BottomNavItem(
         route = "bottom_add",
-        label = "",
+        labelResId = 0, // Add 按钮无标签
         selectedIcon = Icons.Filled.Add,
         unselectedIcon = Icons.Filled.Add
     )
 
     data object Growth : BottomNavItem(
         route = "bottom_growth",
-        label = "成长",
+        labelResId = R.string.nav_growth,
         selectedIcon = Icons.Filled.Timeline,
         unselectedIcon = Icons.Outlined.Timeline
     )
 
     data object Profile : BottomNavItem(
         route = "bottom_profile",
-        label = "我的",
+        labelResId = R.string.nav_profile,
         selectedIcon = Icons.Filled.Person,
         unselectedIcon = Icons.Outlined.Person
     )

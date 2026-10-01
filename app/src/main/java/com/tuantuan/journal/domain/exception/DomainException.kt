@@ -1,5 +1,7 @@
 package com.tuantuan.journal.domain.exception
 
+import com.tuantuan.journal.domain.model.MediaType
+
 /**
  * 领域层统一异常类型。
  *
@@ -11,29 +13,32 @@ package com.tuantuan.journal.domain.exception
  */
 sealed class DomainException(message: String) : Exception(message) {
     data class StorageFull(val required: Long, val available: Long) :
-        DomainException("存储空间不足")
+        DomainException("Storage full: required=$required, available=$available")
 
     data class MediaNotFound(val path: String) :
-        DomainException("媒体文件未找到: $path")
+        DomainException("Media not found: $path")
 
     data class DatabaseError(val code: Int, val detail: String) :
-        DomainException("数据库错误: $code")
+        DomainException("Database error: code=$code")
 
     data class FileTooLarge(val maxSize: Long, val actualSize: Long) :
-        DomainException("文件过大")
+        DomainException("File too large: max=$maxSize, actual=$actualSize")
 
     data class UnsupportedFormat(val mimeType: String) :
-        DomainException("不支持的格式: $mimeType")
+        DomainException("Unsupported format: $mimeType")
 
     data class ValidationError(val field: String, val reason: String) :
-        DomainException("验证失败: $field - $reason")
+        DomainException("Validation failed: $field - $reason")
+
+    data class MediaCountExceeded(val mediaType: MediaType, val maxCount: Int) :
+        DomainException("Media count exceeded: type=$mediaType, max=$maxCount")
 
     data class BackupError(val detail: String) :
-        DomainException("备份错误: $detail")
+        DomainException("Backup error: $detail")
 
     data class NotFound(val entity: String, val id: String) :
-        DomainException("$entity 未找到: $id")
+        DomainException("Not found: $entity/$id")
 
     data class Unknown(val original: Throwable) :
-        DomainException("未知错误: ${original.message}")
+        DomainException("Unknown error: ${original.message}")
 }

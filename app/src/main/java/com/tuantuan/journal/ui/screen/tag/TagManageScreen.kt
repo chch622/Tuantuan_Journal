@@ -32,8 +32,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.tuantuan.journal.R
 import com.tuantuan.journal.domain.model.Tag
 import com.tuantuan.journal.ui.component.TtEmptyState
 import com.tuantuan.journal.ui.component.TtErrorState
@@ -53,10 +55,10 @@ fun TagManageScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("标签管理") },
+                title = { Text(stringResource(R.string.tag_manage)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "返回")
+                        Icon(Icons.Default.ArrowBack, contentDescription = stringResource(R.string.back))
                     }
                 }
             )
@@ -65,7 +67,7 @@ fun TagManageScreen(
             FloatingActionButton(
                 onClick = { showAddDialog = true }
             ) {
-                Icon(Icons.Default.Add, contentDescription = "添加标签")
+                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.tag_add))
             }
         }
     ) { padding ->
@@ -75,10 +77,10 @@ fun TagManageScreen(
             )
         } else if (state.tags.isEmpty()) {
             TtEmptyState(
-                title = "还没有标签",
-                description = "点击右下角 + 创建第一个标签",
+                title = stringResource(R.string.tag_empty_title),
+                description = stringResource(R.string.tag_empty_desc),
                 icon = Icons.Outlined.Label,
-                actionLabel = "添加标签",
+                actionLabel = stringResource(R.string.tag_add),
                 onAction = { showAddDialog = true },
                 modifier = Modifier.fillMaxSize().padding(padding)
             )
@@ -111,20 +113,20 @@ fun TagManageScreen(
                     newTagName = ""
                     newTagCategory = ""
                 },
-                title = { Text("添加标签") },
+                title = { Text(stringResource(R.string.tag_add)) },
                 text = {
                     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         OutlinedTextField(
                             value = newTagName,
                             onValueChange = { newTagName = it },
-                            label = { Text("标签名称 *") },
+                            label = { Text(stringResource(R.string.tag_name_required)) },
                             modifier = Modifier.fillMaxWidth(),
                             singleLine = true
                         )
                         OutlinedTextField(
                             value = newTagCategory,
                             onValueChange = { newTagCategory = it },
-                            label = { Text("分类（可选）") },
+                            label = { Text(stringResource(R.string.tag_category_optional)) },
                             modifier = Modifier.fillMaxWidth(),
                             singleLine = true
                         )
@@ -145,7 +147,7 @@ fun TagManageScreen(
                         },
                         enabled = newTagName.isNotBlank()
                     ) {
-                        Text("添加")
+                        Text(stringResource(R.string.add))
                     }
                 },
                 dismissButton = {
@@ -156,7 +158,7 @@ fun TagManageScreen(
                             newTagCategory = ""
                         }
                     ) {
-                        Text("取消")
+                        Text(stringResource(R.string.cancel))
                     }
                 }
             )

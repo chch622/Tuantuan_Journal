@@ -31,8 +31,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.tuantuan.journal.R
 import com.tuantuan.journal.domain.model.DiaryEntry
 import com.tuantuan.journal.ui.component.TtEmptyState
 import com.tuantuan.journal.ui.component.TtErrorState
@@ -53,10 +55,10 @@ fun SearchScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("搜索日记") },
+                title = { Text(stringResource(R.string.search_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "返回")
+                        Icon(Icons.Default.ArrowBack, contentDescription = stringResource(R.string.back))
                     }
                 }
             )
@@ -73,7 +75,7 @@ fun SearchScreen(
                 active = false,
                 onActiveChange = {},
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
-                placeholder = { Text("搜索日记内容...") },
+                placeholder = { Text(stringResource(R.string.search_hint)) },
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) }
             ) {}
 
@@ -84,8 +86,8 @@ fun SearchScreen(
                 )
             } else if (state.query.isNotBlank() && state.results.isEmpty()) {
                 TtEmptyState(
-                    title = "未找到匹配的日记",
-                    description = "试试其他关键词",
+                    title = stringResource(R.string.search_no_result_title),
+                    description = stringResource(R.string.search_no_result_desc),
                     icon = Icons.Outlined.SearchOff,
                     modifier = Modifier.fillMaxSize()
                 )
@@ -119,12 +121,12 @@ private fun DiarySearchResultItem(
     entry: DiaryEntry,
     onClick: () -> Unit
 ) {
-    val dateFormatter = DateTimeFormatter.ofPattern("MM月dd日")
+    val dateFormatter = DateTimeFormatter.ofPattern(stringResource(R.string.date_format_month_day))
     val date = entry.eventDateTime.atZone(ZoneId.systemDefault()).format(dateFormatter)
 
     ListItem(
         headlineContent = {
-            Text(entry.title ?: "无标题", style = MaterialTheme.typography.titleSmall)
+            Text(entry.title ?: stringResource(R.string.diary_no_title), style = MaterialTheme.typography.titleSmall)
         },
         supportingContent = {
             Text(

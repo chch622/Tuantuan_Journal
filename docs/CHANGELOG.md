@@ -7,6 +7,8 @@
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-10-01
+
 ### Added — UI/UX Design Bible
 
 - 创建 docs/design/DESIGN_BIBLE.md — 设计圣经总入口（Soft Emotional Minimalism）
@@ -42,6 +44,50 @@
 - 创建 docs/design/DESIGN_DECISIONS.md — 设计决策日志（10 个决策）
 - 创建 docs/design/DESIGN_REVIEW_CHECKLIST.md — 设计审查清单
 
+### Added — Phase 1: 核心功能
+
+- 儿童档案管理 — 创建、编辑、删除儿童档案（含删除确认对话框）
+- 日记创建 — 创建日记条目（文字+日期+心情+天气+地点+标签+照片）
+- 日记列表 — 按日期显示日记列表（含空状态、搜索入口）
+- 日记详情 — 查看日记完整内容（含照片展示、全屏查看、收藏）
+- 日记编辑 — 编辑已有日记（含表单回填、标签更新、照片添加）
+- 日记删除 — 软删除日记（含确认对话框）
+- 照片添加 — Photo Picker 选择照片 + SaveMediaUseCase 保存 + MediaFileManager 文件管理
+- 照片查看 — TtPhotoGallery 自适应排版 + TtPhotoViewer 全屏查看
+- 标签系统 — 创建、管理标签 + 日记关联 FilterChip 选择
+- 搜索功能 — 按关键词搜索日记（SearchScreen + SearchViewModel）
+- 首页 — 儿童切换器 + 主照片区 + 今日卡片 + 最近回忆 + 成长概览占位 + 生日倒计时
+- 5-Tab 底部导航 — Home/Record/Add/Growth/Profile + 子页面路由
+- 共享状态组件 — TtEmptyState/TtErrorState(含UiError版)/TtLoadingState(三种模式)
+- 确认对话框 — ConfirmDialog + DeleteConfirmDialog 预配置版
+- 照片组件 — TtPhotoGallery(1/2/多张自适应)/TtPhotoViewer(全屏)/TtMediaAddBar/TtSelectedPhotosBar
+- 首页组件 — TtTodayCard/TtDiaryCard/TtGrowthCard(Phase 1占位)/AgeDisplay/BirthdayCountdown
+- 设计系统 Token — TuantuanSpacing/RoundedCorner/Typography/Elevation/Colors
+- UiError 分层错误处理链 — Throwable → DomainException → UiError → resolveMessage()
+- DomainException 扩展 — MediaCountExceeded 媒体数量限制异常
+- 导航系统 — Navigation Compose 5-Tab 底部导航 + 子页面路由（ChildDetail/ChildEdit/ChildAdd/DiaryList/DiaryDetail/DiaryEdit/DiaryAdd/Search/TagManage）
+- DI 模块 — DatabaseModule/RepositoryModule/UseCaseModule
+- 媒体数据分离 — 数据库存索引，文件系统存内容
+- 软删除机制 — isDeleted 标记，查询自动过滤
+
+### Added — Phase 1: 单元测试
+
+- Domain UseCase 单元测试 — 48 个测试全部通过（Child/Diary/Media/Tag 四个模块）
+- DomainException 单元测试 — 9 个测试全部通过（消息格式+数据类等价性）
+- Data Mapper 单元测试 — 23 个测试全部通过
+  - ChildMapperTest — 5 个测试（toDomain/toEntity 字段映射 + nullable 处理 + 双向 round-trip）
+  - DiaryEntryMapperTest — 7 个测试（toDomain 含/不含 mediaItems+tags + nullable + toEntity 排除关联数据 + round-trip + 关联数据丢失验证）
+  - MediaItemMapperTest — 6 个测试（toDomain/toEntity 字段映射 + nullable + VIDEO duration + round-trip）
+  - TagMapperTest — 5 个测试（toDomain/toEntity 字段映射 + nullable + round-trip）
+
+### Changed — Phase 1: 架构改进
+
+- DomainException 消息改为英文技术描述（用户消息由 UiError/stringResource 提供）
+- SaveMediaUseCase 媒体数量验证改用 MediaCountExceeded 异常（替代 ValidationError + 硬编码中文）
+- MediaFileManager 验证错误消息改为英文
+- strings.xml 扩充至 200+ 字符串资源（UI 层全部 stringResource 化）
+- SaveMediaUseCaseTest 改用 fake MediaFileService 实现（解决 Mockito + Kotlin 非空 Uri 参数的 null stub 问题）
+
 ## [0.1.0] - 2026-09-27
 
 ### Added — Phase 0: 项目基础设施
@@ -69,6 +115,10 @@
 - 安装 Android 开发技能集（30 个技能文件）
 
 ---
+
+[Unreleased]: https://github.com/chch622/Tuantuan_Journal/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/chch622/Tuantuan_Journal/compare/v0.1.0...v0.1.1
+[0.1.0]: https://github.com/chch622/Tuantuan_Journal/releases/tag/v0.1.0
 
 *本文件遵循 [Keep a Changelog](https://keepachangelog.com/) 格式*
 *本文件遵循 [语义化版本](https://semver.org/) 规范*

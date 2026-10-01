@@ -52,6 +52,11 @@ class DiaryRepositoryImpl @Inject constructor(
             entities.map { DiaryEntryMapper.toDomain(it) }
         }
 
+    override fun getTodayEntries(childId: String): Flow<List<DiaryEntry>> =
+        diaryEntryDao.getTodayEntries(childId).map { entities ->
+            entities.map { DiaryEntryMapper.toDomain(it) }
+        }
+
     override suspend fun createEntry(entry: DiaryEntry): String {
         diaryEntryDao.insert(DiaryEntryMapper.toEntity(entry))
         return entry.id

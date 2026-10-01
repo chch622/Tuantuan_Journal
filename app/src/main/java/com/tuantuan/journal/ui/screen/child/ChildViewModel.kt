@@ -8,6 +8,7 @@ import com.tuantuan.journal.domain.usecase.child.DeleteChildUseCase
 import com.tuantuan.journal.domain.usecase.child.GetChildByIdUseCase
 import com.tuantuan.journal.domain.usecase.child.GetChildrenUseCase
 import com.tuantuan.journal.domain.usecase.child.SaveChildUseCase
+import com.tuantuan.journal.R
 import com.tuantuan.journal.ui.model.UiError
 import com.tuantuan.journal.ui.model.toUiError
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -80,7 +81,7 @@ class ChildViewModel @Inject constructor(
     fun createChild() {
         val state = _formState.value
         if (state.name.isBlank()) {
-            _formState.value = state.copy(error = UiError.ValidationError("请输入姓名"))
+            _formState.value = state.copy(error = UiError.ValidationError(R.string.error_validation_name))
             return
         }
         viewModelScope.launch {

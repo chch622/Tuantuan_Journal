@@ -1,7 +1,7 @@
 package com.tuantuan.journal.domain.usecase.media
 
 import android.net.Uri
-import com.tuantuan.journal.data.local.file.MediaFileManager
+import com.tuantuan.journal.data.local.file.MediaFileService
 import com.tuantuan.journal.data.local.file.MediaFileInfo
 import com.tuantuan.journal.domain.exception.DomainException
 import com.tuantuan.journal.domain.model.MediaItem
@@ -22,7 +22,7 @@ import javax.inject.Inject
  * 遵循 ARCHITECTURE.md：Domain层UseCase，协调Data层操作。
  */
 class SaveMediaUseCase @Inject constructor(
-    private val mediaFileManager: MediaFileManager,
+    private val mediaFileManager: MediaFileService,
     private val mediaRepository: MediaRepository
 ) {
     /**
@@ -34,7 +34,7 @@ class SaveMediaUseCase @Inject constructor(
      * @return 保存后的 MediaItem
      * @throws DomainException.FileTooLarge 文件超过大小限制
      * @throws DomainException.UnsupportedFormat 不支持的文件格式
-     * @throws DomainException.ValidationError 超过每条日记的媒体数量限制
+     * @throws DomainException.MediaCountExceeded 超过每条日记的媒体数量限制
      */
     suspend operator fun invoke(
         sourceUri: Uri,
@@ -81,10 +81,7 @@ class SaveMediaUseCase @Inject constructor(
             MediaType.AUDIO -> MAX_AUDIOS_PER_ENTRY
         }
         if (currentCount >= maxCount) {
-            throw DomainException.ValidationError(
-                "mediaCount",
-                "每条日记最多添加 $maxCount 个${mediaType.label}"
-            )
+            throw DomainException.MediaCountExceeded(mediaType, maxCount)
         }
     }
 
@@ -94,10 +91,3 @@ class SaveMediaUseCase @Inject constructor(
         private const val MAX_AUDIOS_PER_ENTRY = 5
     }
 }
-
-private val MediaType.label: String
-    get() = when (this) {
-        MediaType.PHOTO -> "照片"
-        MediaType.VIDEO -> "视频"
-        MediaType.AUDIO -> "音频"
-    }

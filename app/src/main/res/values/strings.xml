@@ -1,4 +1,200 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">团团日记</string>
+
+    <!-- 通用 -->
+    <string name="back">返回</string>
+    <string name="add">添加</string>
+    <string name="edit">编辑</string>
+    <string name="delete">删除</string>
+    <string name="confirm">确认</string>
+    <string name="cancel">取消</string>
+    <string name="retry">重试</string>
+    <string name="save">保存</string>
+    <string name="loading">加载中…</string>
+
+    <!-- 首页 -->
+    <string name="home_title">团团日记</string>
+    <string name="tag_management">标签管理</string>
+    <string name="add_child">添加儿童</string>
+    <string name="welcome_title">欢迎来到团团日记</string>
+    <string name="welcome_desc">开始记录团团的第一个瞬间吧</string>
+    <string name="welcome_action">记录第一个瞬间</string>
+    <string name="recent_memories">最近回忆</string>
+    <string name="view_all">查看全部</string>
+    <string name="click_to_set_photo">点击设置照片</string>
+
+    <!-- 今天卡片 -->
+    <string name="today_no_memory">今天还没有留下回忆。</string>
+    <string name="today_record">记录今天</string>
+    <string name="today_has_memory">今天已经留下 %1$d 个瞬间。</string>
+    <string name="today_view">查看今天</string>
+
+    <!-- 成长卡片 -->
+    <string name="growth_overview">成长概览</string>
+    <string name="growth_no_data">暂无成长数据</string>
+    <string name="growth_hint">记录身高体重后这里会显示</string>
+
+    <!-- 生日倒计时 -->
+    <string name="birthday_countdown">🎂 距离%1$s的生日还有</string>
+    <string name="birthday_days">%1$d 天</string>
+
+    <!-- 年龄显示 -->
+    <string name="age_years">岁</string>
+    <string name="age_months">个月</string>
+    <string name="age_days">天</string>
+
+    <!-- 媒体 -->
+    <string name="media_photo">照片</string>
+    <string name="media_video">视频</string>
+    <string name="media_audio">语音</string>
+    <string name="media_add_photo">添加照片</string>
+    <string name="media_add_video">添加视频</string>
+    <string name="media_add_audio">添加语音</string>
+    <string name="media_photo_count">%1$d张照片</string>
+    <string name="media_selected_count">已选 %1$d 张照片</string>
+    <string name="media_remove_photo">移除照片</string>
+    <string name="media_selected_photo">已选照片 %1$d</string>
+    <string name="media_photo_index">照片 %1$d</string>
+
+    <!-- 日记 -->
+    <string name="diary_detail">日记详情</string>
+    <string name="diary_add">添加日记</string>
+    <string name="diary_edit">编辑日记</string>
+    <string name="diary_not_found">未找到日记</string>
+    <string name="diary_title_optional">标题（可选）</string>
+    <string name="diary_date">日期</string>
+    <string name="diary_date_hint">yyyy-MM-dd</string>
+    <string name="diary_mood">心情</string>
+    <string name="diary_mood_none">不选择</string>
+    <string name="diary_weather">天气</string>
+    <string name="diary_weather_none">不选择</string>
+    <string name="diary_location_optional">地点（可选）</string>
+    <string name="diary_tags">标签</string>
+    <string name="diary_content_required">日记内容 *</string>
+    <string name="diary_save">保存日记</string>
+    <string name="diary_save_edit">保存修改</string>
+    <string name="diary_favorite">收藏</string>
+    <string name="diary_select_child">选择儿童添加日记</string>
+    <string name="diary_content_error">请输入日记内容</string>
+    <string name="diary_mood_label">心情：%1$s</string>
+    <string name="diary_weather_label">天气：%1$s</string>
+    <string name="diary_location_label">地点：%1$s</string>
+    <string name="diary_this_entry">此日记</string>
+
+    <!-- 心情 -->
+    <string name="mood_happy">开心 😊</string>
+    <string name="mood_calm">平静 😌</string>
+    <string name="mood_excited">兴奋 🤩</string>
+    <string name="mood_sad">难过 😢</string>
+    <string name="mood_angry">生气 😠</string>
+    <string name="mood_sick">不舒服 🤒</string>
+    <string name="mood_tired">疲惫 😴</string>
+
+    <!-- 天气 -->
+    <string name="weather_sunny">晴天 ☀️</string>
+    <string name="weather_cloudy">多云 ☁️</string>
+    <string name="weather_rainy">下雨 🌧️</string>
+    <string name="weather_snowy">下雪 ❄️</string>
+    <string name="weather_windy">刮风 💨</string>
+    <string name="weather_foggy">雾天 🌫️</string>
+
+    <!-- 确认对话框 -->
+    <string name="confirm_delete_title">确认删除</string>
+    <string name="confirm_delete_permanent">删除 %1$s 后将无法恢复，确定要删除吗？</string>
+    <string name="confirm_delete_temp">确定删除 %1$s 吗？</string>
+
+    <!-- 标签管理 -->
+    <string name="tag_manage">标签管理</string>
+    <string name="tag_add">添加标签</string>
+    <string name="tag_name_required">标签名称 *</string>
+    <string name="tag_category_optional">分类（可选）</string>
+    <string name="tag_empty_title">还没有标签</string>
+    <string name="tag_empty_desc">点击右下角 + 创建第一个标签</string>
+
+    <!-- 儿童详情 -->
+    <string name="child_detail">儿童详情</string>
+    <string name="child_add">添加儿童</string>
+    <string name="child_edit">编辑儿童</string>
+    <string name="child_not_found">未找到儿童信息</string>
+    <string name="child_nickname">小名：%1$s</string>
+    <string name="child_nickname_label">小名</string>
+    <string name="child_name_required">姓名 *</string>
+    <string name="child_basic_info">基本信息</string>
+    <string name="child_birth_date">出生日期</string>
+    <string name="child_birth_date_format">出生日期 (yyyy-MM-dd)</string>
+    <string name="child_birth_date_hint">如：2023-01-15</string>
+    <string name="child_age">年龄</string>
+    <string name="child_age_format">%1$d岁%2$d个月</string>
+    <string name="child_gender">性别</string>
+    <string name="child_gender_select">请选择</string>
+    <string name="child_birth_info">出生信息</string>
+    <string name="child_birth_weight">出生体重</string>
+    <string name="child_birth_weight_unit">出生体重(kg)</string>
+    <string name="child_birth_height">出生身高</string>
+    <string name="child_birth_height_unit">出生身高(cm)</string>
+    <string name="child_blood_type">血型</string>
+    <string name="child_birth_place">出生地</string>
+    <string name="child_notes">备注</string>
+    <string name="child_write_diary">写日记</string>
+    <string name="child_view_all_diaries">查看所有日记</string>
+    <string name="child_delete_confirm_item">此儿童档案及所有关联日记</string>
+    <string name="child_gender_male">男</string>
+    <string name="child_gender_female">女</string>
+    <string name="child_gender_other">其他</string>
+
+    <!-- 底部导航 -->
+    <string name="nav_home">首页</string>
+    <string name="nav_record">记录</string>
+    <string name="nav_growth">成长</string>
+    <string name="nav_profile">我的</string>
+
+    <!-- 搜索 -->
+    <string name="search_title">搜索日记</string>
+    <string name="search_hint">搜索日记内容…</string>
+    <string name="search_no_result_title">未找到匹配的日记</string>
+    <string name="search_no_result_desc">试试其他关键词</string>
+    <string name="search">搜索</string>
+
+    <!-- 日记列表 -->
+    <string name="diary_list">日记列表</string>
+    <string name="diary_write">写日记</string>
+    <string name="diary_empty_title">还没有日记</string>
+    <string name="diary_empty_desc">点击右下角 + 开始写第一篇</string>
+    <string name="diary_no_title">无标题</string>
+
+    <!-- 儿童列表 -->
+    <string name="child_list">儿童档案</string>
+    <string name="child_empty_title">还没有儿童档案</string>
+    <string name="child_empty_desc">点击右下角 + 添加第一个档案</string>
+
+    <!-- 占位页面 -->
+    <string name="growth_record">成长记录</string>
+    <string name="record_title">日记记录</string>
+    <string name="profile_title">我的</string>
+    <string name="coming_soon">即将推出</string>
+
+    <!-- 日期格式 -->
+    <string name="date_format_full">yyyy年MM月dd日</string>
+    <string name="date_format_full_time">yyyy年MM月dd日 HH:mm</string>
+    <string name="date_format_month_day">MM月dd日</string>
+    <string name="date_format_dot">yyyy.MM.dd</string>
+
+    <!-- 错误 -->
+    <string name="error_storage_full">存储空间不足，请清理后重试</string>
+    <string name="error_media_not_found">文件未找到，可能已被移动</string>
+    <string name="error_backup_corrupted">备份文件已损坏，无法恢复</string>
+    <string name="error_database">数据异常，请稍后重试</string>
+    <string name="error_file_too_large">文件超过大小限制（20MB）</string>
+    <string name="error_unsupported_format">不支持此文件格式</string>
+    <string name="error_validation_name">请输入儿童姓名</string>
+    <string name="error_validation_content">请输入日记内容</string>
+    <string name="error_validation_date">日期不能晚于今天</string>
+    <string name="error_validation_tag">标签名已存在</string>
+    <string name="error_validation_generic">输入有误，请检查</string>
+    <string name="error_not_found">数据未找到</string>
+    <string name="error_unknown">发生未知错误</string>
+    <string name="error_media_count_exceeded_photo">每条日记最多添加 %1$d 张照片</string>
+    <string name="error_media_count_exceeded_video">每条日记最多添加 %1$d 个视频</string>
+    <string name="error_media_count_exceeded_audio">每条日记最多添加 %1$d 个音频</string>
 </resources>
