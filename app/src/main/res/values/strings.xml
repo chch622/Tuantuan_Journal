@@ -174,6 +174,62 @@
     <string name="profile_title">我的</string>
     <string name="coming_soon">即将推出</string>
 
+    <!-- 成长页面 -->
+    <string name="growth_title">成长</string>
+    <string name="growth_growing_up">团团正在慢慢长大</string>
+    <string name="growth_height">身高</string>
+    <string name="growth_weight">体重</string>
+    <string name="growth_head_circumference">头围</string>
+    <string name="growth_shoe_size">鞋码</string>
+    <string name="growth_not_recorded">还未记录</string>
+    <string name="growth_start_recording">开始记录</string>
+    <string name="growth_view_curve">查看完整曲线</string>
+    <string name="growth_latest_record">最近一次 %1$s</string>
+    <string name="growth_add_record">添加成长记录</string>
+    <string name="growth_record_height">记录身高</string>
+    <string name="growth_record_weight">记录体重</string>
+    <string name="growth_record_head">记录头围</string>
+    <string name="growth_record_shoe">记录鞋码</string>
+    <string name="growth_record_milestone">记录里程碑</string>
+    <string name="growth_empty_title">团团的成长记录会在这里</string>
+    <string name="growth_empty_desc">记录第一次身高体重，开始追踪成长曲线</string>
+    <string name="growth_empty_action">记录成长</string>
+    <string name="growth_curve_hint">再记录一次就能看到成长曲线了</string>
+    <string name="growth_measure_date">测量日期</string>
+    <string name="growth_notes">备注（可选）</string>
+    <string name="growth_save">保存</string>
+
+    <!-- 里程碑页面 -->
+    <string name="milestone_title">团团的第一次</string>
+    <string name="milestone_all">全部</string>
+    <string name="milestone_category_motor">动作</string>
+    <string name="milestone_category_language">语言</string>
+    <string name="milestone_category_cognitive">认知</string>
+    <string name="milestone_category_social">社交</string>
+    <string name="milestone_category_self_care">自理</string>
+    <string name="milestone_category_other">其他</string>
+    <string name="milestone_achieved">已达成</string>
+    <string name="milestone_not_achieved">还没有记录</string>
+    <string name="milestone_record_this">记录这个瞬间</string>
+    <string name="milestone_add">添加里程碑</string>
+    <string name="milestone_select_category">选择分类</string>
+    <string name="milestone_name">里程碑名称</string>
+    <string name="milestone_date">日期</string>
+    <string name="milestone_description">描述（可选）</string>
+    <string name="milestone_empty_title">还没有记录里程碑</string>
+    <string name="milestone_empty_desc">团团的每一个"第一次"都值得被记住</string>
+    <string name="milestone_empty_action">记录第一个瞬间</string>
+    <string name="milestone_view_all">查看全部</string>
+    <string name="milestone_category_all">全部</string>
+    <string name="milestone_category_empty_title">该分类暂无里程碑</string>
+    <string name="milestone_category_empty_desc">试试其他分类或添加新里程碑</string>
+    <string name="milestone_pending_title">待记录</string>
+    <string name="milestone_achieved_title">已达成</string>
+
+    <!-- 验证错误 -->
+    <string name="error_validation_value">请输入有效的数值</string>
+    <string name="error_validation_title">请输入标题</string>
+
     <!-- 日期格式 -->
     <string name="date_format_full">yyyy年MM月dd日</string>
     <string name="date_format_full_time">yyyy年MM月dd日 HH:mm</string>

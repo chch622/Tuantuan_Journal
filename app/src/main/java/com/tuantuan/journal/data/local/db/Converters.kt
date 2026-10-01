@@ -2,7 +2,9 @@ package com.tuantuan.journal.data.local.db
 
 import androidx.room.TypeConverter
 import com.tuantuan.journal.domain.model.Gender
+import com.tuantuan.journal.domain.model.GrowthType
 import com.tuantuan.journal.domain.model.MediaType
+import com.tuantuan.journal.domain.model.MilestoneCategory
 import com.tuantuan.journal.domain.model.Mood
 import com.tuantuan.journal.domain.model.Weather
 import java.time.Instant
@@ -51,4 +53,18 @@ class Converters {
 
     @TypeConverter
     fun toMediaType(value: String?): MediaType? = value?.let { MediaType.valueOf(it) }
+
+    // GrowthType converter
+    @TypeConverter
+    fun fromGrowthType(value: GrowthType?): String? = value?.name
+
+    @TypeConverter
+    fun toGrowthType(value: String?): GrowthType? = value?.let { GrowthType.valueOf(it) }
+
+    // MilestoneCategory converter
+    @TypeConverter
+    fun fromMilestoneCategory(value: MilestoneCategory?): String? = value?.name
+
+    @TypeConverter
+    fun toMilestoneCategory(value: String?): MilestoneCategory? = value?.let { MilestoneCategory.valueOf(it) }
 }

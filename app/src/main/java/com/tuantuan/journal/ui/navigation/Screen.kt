@@ -24,4 +24,10 @@ sealed class Screen(val route: String) {
     }
     data object Search : Screen("children/{childId}/search") { fun createRoute(childId: String) = "children/$childId/search" }
     data object TagManage : Screen("tags")
+    data object Growth : Screen("children/{childId}/growth") {
+        fun createRoute(childId: String) = "children/$childId/growth"
+    }
+    data object Milestone : Screen("children/{childId}/milestones") {
+        fun createRoute(childId: String) = "children/$childId/milestones"
+    }
 }

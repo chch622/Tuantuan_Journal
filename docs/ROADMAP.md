@@ -10,8 +10,8 @@
 | 阶段 | 名称 | 目标 | 状态 |
 |------|------|------|------|
 | Phase 0 | 项目基础设施 | 治理体系、规范文档 | ✅ 已完成 |
-| Phase 1 | 核心功能 | 日记 CRUD、儿童档案 | ⚠️ 即将完成 |
-| Phase 2 | 成长记录 | 成长数据、里程碑 | 未开始 |
+| Phase 1 | 核心功能 | 日记 CRUD、儿童档案 | ✅ 已完成 |
+| Phase 2 | 成长记录 | 成长数据、里程碑 | ⚠️ 进行中 |
 | Phase 3 | 媒体增强 | 照片编辑、视频播放 | 未开始 |
 | Phase 4 | 数据安全 | 备份恢复、数据导出 | 未开始 |
 | Phase 5 | 精益打磨 | 性能优化、无障碍 | 未开始 |
@@ -106,24 +106,45 @@
 
 ### 4.1 功能列表
 
-| 功能 | 优先级 | 描述 |
-|------|--------|------|
-| 身高记录 | P0 | 记录和展示身高变化 |
-| 体重记录 | P0 | 记录和展示体重变化 |
-| 头围记录 | P1 | 记录头围变化 |
-| 成长曲线图 | P0 | 可视化成长数据 |
-| 里程碑记录 | P0 | 记录第一次（走路、说话等） |
-| 里程碑提醒 | P1 | 提醒预期里程碑 |
-| 疫苗记录 | P1 | 记录疫苗接种 |
-| 疫苗提醒 | P1 | 提醒接种计划 |
+| 功能 | 优先级 | 描述 | 状态 |
+|------|--------|------|------|
+| 身高记录 | P0 | 记录和展示身高变化 | ✅ 已完成 |
+| 体重记录 | P0 | 记录和展示体重变化 | ✅ 已完成 |
+| 头围记录 | P1 | 记录头围变化 | ✅ 已完成 |
+| 鞋码记录 | P1 | 记录鞋码变化 | ✅ 已完成 |
+| 成长曲线图 | P0 | 可视化成长数据 | 🔲 待实现 |
+| 里程碑记录 | P0 | 记录第一次（走路、说话等） | ✅ 已完成 |
+| 里程碑分类 | P0 | 按类别筛选里程碑 | ✅ 已完成 |
+| 里程碑达成 | P0 | 标记里程碑完成 | ✅ 已完成 |
+| 里程碑提醒 | P1 | 提醒预期里程碑 | 🔲 待实现 |
+| 疫苗记录 | P1 | 记录疫苗接种 | 🔲 待实现 |
+| 疫苗提醒 | P1 | 提醒接种计划 | 🔲 待实现 |
 
-### 4.2 验收标准
+### 4.2 技术任务
 
-- 可记录身高/体重/头围
-- 成长曲线图正确显示
+| 任务 | 描述 | 状态 |
+|------|------|------|
+| Domain Model | GrowthRecord + Milestone 模型 | ✅ 已完成 |
+| Repository 接口 | GrowthRepository + MilestoneRepository | ✅ 已完成 |
+| Data Entity/DAO | GrowthRecordEntity + MilestoneEntity | ✅ 已完成 |
+| Mapper | GrowthRecordMapper + MilestoneMapper | ✅ 已完成 |
+| Repository 实现 | GrowthRepositoryImpl + MilestoneRepositoryImpl | ✅ 已完成 |
+| DB Migration | v1→v2 新增 growth_records + milestones 表 | ✅ 已完成 |
+| DI 配置 | RepositoryModule 绑定 | ✅ 已完成 |
+| UseCase | Get/Save/Delete/Achieve UseCases | ✅ 已完成 |
+| ViewModel | GrowthViewModel + MilestoneViewModel | ✅ 已完成 |
+| UiState | GrowthUiState + MilestoneUiState | ✅ 已完成 |
+| Screen UI | GrowthScreen + MilestoneScreen | ✅ 已完成 |
+| 导航路由 | Growth + Milestone 路由注册 | ✅ 已完成 |
+| 单元测试 | Mapper/Repository/UseCase/UiState 测试 | ✅ 已完成 |
+
+### 4.3 验收标准
+
+- 可记录身高/体重/头围/鞋码
+- 成长数据卡片按类型分组展示
 - 里程碑可创建和标记完成
-- 疫苗记录可管理
-- 提醒功能可用
+- 里程碑可按分类筛选
+- 所有数据持久化且软删除正确工作
 
 ---
 

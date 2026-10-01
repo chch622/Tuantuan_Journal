@@ -1,7 +1,7 @@
 package com.tuantuan.journal.data.repository
 
 import com.tuantuan.journal.data.local.db.dao.MediaItemDao
-import com.tuantuan.journal.data.local.file.MediaFileManager
+import com.tuantuan.journal.data.local.file.MediaFileService
 import com.tuantuan.journal.data.mapper.MediaItemMapper
 import com.tuantuan.journal.domain.model.MediaItem
 import com.tuantuan.journal.domain.repository.MediaRepository
@@ -15,7 +15,7 @@ import javax.inject.Singleton
 @Singleton
 class MediaRepositoryImpl @Inject constructor(
     private val mediaItemDao: MediaItemDao,
-    private val mediaFileManager: MediaFileManager
+    private val mediaFileManager: MediaFileService
 ) : MediaRepository {
 
     override fun getMediaByEntry(entryId: String): Flow<List<MediaItem>> =

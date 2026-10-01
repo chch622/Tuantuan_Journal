@@ -5,7 +5,32 @@
 
 ---
 
-## [Unreleased]
+## [0.1.2] - 2026-10-01
+
+### Added — Phase 2 成长记录与里程碑
+
+- Domain Model: GrowthRecord、GrowthType、Milestone、MilestoneCategory（含 OTHER 分类）
+- Repository 接口: GrowthRepository、MilestoneRepository
+- Data Entity: GrowthRecordEntity、MilestoneEntity（含外键和索引优化）
+- DAO: GrowthRecordDao、MilestoneDao（软删除查询、按类型/分类筛选）
+- Mapper: GrowthRecordMapper、MilestoneMapper（Entity ↔ Domain 双向映射）
+- Repository 实现: GrowthRepositoryImpl、MilestoneRepositoryImpl
+- DB Migration: v1→v2 新增 growth_records 和 milestones 表
+- DI 配置: RepositoryModule 绑定 GrowthRepository 和 MilestoneRepository
+- UseCase: GetGrowthRecordsUseCase（3方法）、SaveGrowthRecordUseCase、DeleteGrowthRecordUseCase
+- UseCase: GetMilestonesUseCase（4方法）、SaveMilestoneUseCase、AchieveMilestoneUseCase、DeleteMilestoneUseCase
+- ViewModel: GrowthViewModel（6个UseCase依赖，儿童列表+成长数据+里程碑预览）
+- ViewModel: MilestoneViewModel（4个UseCase依赖，分类筛选+达成+CRUD）
+- UiState: GrowthUiState（recordsByType分组、expandedCardType、showAddSheet）+ GrowthFormState
+- UiState: MilestoneUiState（分类筛选、achievedMilestones/pendingMilestones派生属性）+ MilestoneFormState
+- Screen: GrowthScreen（年龄概览+成长数据卡片+里程碑预览+FAB+ModalBottomSheet）
+- Screen: MilestoneScreen（分类筛选Chip+达成/未达成列表+FAB）
+- 导航路由: Screen.Growth、Screen.Milestone（含childId参数）
+- 字符串资源: 40+条成长/里程碑页面中文字符串
+- 单元测试: GrowthRecordMapperTest、MilestoneMapperTest、GrowthRepositoryImplTest、MilestoneRepositoryImplTest
+- 单元测试: GetGrowthRecordsUseCaseTest、SaveGrowthRecordUseCaseTest、DeleteGrowthRecordUseCaseTest
+- 单元测试: GetMilestonesUseCaseTest、AchieveMilestoneUseCaseTest、SaveMilestoneUseCaseTest、DeleteMilestoneUseCaseTest
+- 单元测试: GrowthUiStateTest、GrowthFormStateTest、MilestoneUiStateTest、MilestoneFormStateTest
 
 ## [0.1.1] - 2026-10-01
 
@@ -79,6 +104,14 @@
   - DiaryEntryMapperTest — 7 个测试（toDomain 含/不含 mediaItems+tags + nullable + toEntity 排除关联数据 + round-trip + 关联数据丢失验证）
   - MediaItemMapperTest — 6 个测试（toDomain/toEntity 字段映射 + nullable + VIDEO duration + round-trip）
   - TagMapperTest — 5 个测试（toDomain/toEntity 字段映射 + nullable + round-trip）
+- Data Repository 单元测试 — 39 个测试全部通过
+  - ChildRepositoryImplTest — 8 个测试（CRUD + Flow映射 + 空列表 + null返回 + 软删除委托）
+  - DiaryRepositoryImplTest — 13 个测试（Flow映射 + 详情含关联数据 + 搜索/收藏/最近/今日 + CRUD + 软删除 + 收藏切换）
+  - MediaRepositoryImplTest — 8 个测试（Flow映射 + 添加 + 软删除 + 按entry批量删除 + 空列表 + 计数）
+  - TagRepositoryImplTest — 10 个测试（CRUD + 标签关联 + 使用计数递增 + Flow映射 + 空列表 + null返回）
+- UiError 转换链单元测试 — 17 个测试全部通过
+  - DomainException.toUiError() — 14 个测试（10种异常子类型映射 + ValidationError字段分支 + MediaCountExceeded媒体类型分支 + formatArgs验证）
+  - Throwable.toUiError() — 3 个测试（DomainException委托 + 非DomainException包装为GenericError）
 
 ### Changed — Phase 1: 架构改进
 
@@ -87,6 +120,7 @@
 - MediaFileManager 验证错误消息改为英文
 - strings.xml 扩充至 200+ 字符串资源（UI 层全部 stringResource 化）
 - SaveMediaUseCaseTest 改用 fake MediaFileService 实现（解决 Mockito + Kotlin 非空 Uri 参数的 null stub 问题）
+- MediaRepositoryImpl 改用 MediaFileService 接口依赖（遵循依赖倒置原则，支持 Mockito mock）
 
 ## [0.1.0] - 2026-09-27
 

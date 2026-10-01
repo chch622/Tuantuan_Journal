@@ -18,6 +18,7 @@ import com.tuantuan.journal.ui.screen.diary.DiaryDetailScreen
 import com.tuantuan.journal.ui.screen.diary.DiaryEditScreen
 import com.tuantuan.journal.ui.screen.diary.DiaryListScreen
 import com.tuantuan.journal.ui.screen.growth.GrowthScreen
+import com.tuantuan.journal.ui.screen.milestone.MilestoneScreen
 import com.tuantuan.journal.ui.screen.home.HomeScreen
 import com.tuantuan.journal.ui.screen.profile.ProfileScreen
 import com.tuantuan.journal.ui.screen.record.RecordScreen
@@ -31,7 +32,7 @@ import com.tuantuan.journal.ui.screen.tag.TagManageScreen
  * - bottom_home → HomeScreen
  * - bottom_record → RecordScreen（Phase 2 占位）
  * - bottom_add → AddScreen（快速添加入口）
- * - bottom_growth → GrowthScreen（Phase 2 占位）
+ * - bottom_growth → GrowthScreen
  * - bottom_profile → ProfileScreen（Phase 2 占位）
  *
  * 子页面路由（从 Tab 页面导航进入，显示返回按钮）：
@@ -39,6 +40,8 @@ import com.tuantuan.journal.ui.screen.tag.TagManageScreen
  * - diaries/{entryId} → 日记详情/编辑/添加
  * - search → 搜索
  * - tags → 标签管理
+ * - children/{childId}/growth → 成长详情
+ * - children/{childId}/milestones → 里程碑详情
  */
 @Composable
 fun TuantuanNavigation(
@@ -91,7 +94,11 @@ fun TuantuanNavigation(
         }
 
         composable(BottomNavItem.Growth.route) {
-            GrowthScreen()
+            GrowthScreen(
+                onMilestoneViewAll = { childId ->
+                    navController.navigate(Screen.Milestone.createRoute(childId))
+                }
+            )
         }
 
         composable(BottomNavItem.Profile.route) {
@@ -226,6 +233,29 @@ fun TuantuanNavigation(
 
         composable(Screen.TagManage.route) {
             TagManageScreen(onBackClick = { navController.popBackStack() })
+        }
+
+        // 成长详情页
+        composable(
+            route = Screen.Growth.route,
+            arguments = listOf(navArgument("childId") { type = NavType.StringType })
+        ) {
+            val childId = it.arguments?.getString("childId") ?: return@composable
+            GrowthScreen(
+                onMilestoneViewAll = { id ->
+                    navController.navigate(Screen.Milestone.createRoute(id))
+                }
+            )
+        }
+
+        // 里程碑详情页
+        composable(
+            route = Screen.Milestone.route,
+            arguments = listOf(navArgument("childId") { type = NavType.StringType })
+        ) {
+            MilestoneScreen(
+                onAddMilestone = { /* TODO: 导航到添加里程碑表单 */ }
+            )
         }
     }
 }
