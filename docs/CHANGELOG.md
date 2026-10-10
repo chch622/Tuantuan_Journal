@@ -5,7 +5,7 @@
 
 ---
 
-## [0.1.2] - 2026-10-01
+## [0.1.3] - 2026-10-10
 
 ### Added — Phase 2 成长记录与里程碑
 
@@ -31,6 +31,34 @@
 - 单元测试: GetGrowthRecordsUseCaseTest、SaveGrowthRecordUseCaseTest、DeleteGrowthRecordUseCaseTest
 - 单元测试: GetMilestonesUseCaseTest、AchieveMilestoneUseCaseTest、SaveMilestoneUseCaseTest、DeleteMilestoneUseCaseTest
 - 单元测试: GrowthUiStateTest、GrowthFormStateTest、MilestoneUiStateTest、MilestoneFormStateTest
+
+### Added — Phase 2 成长曲线图
+
+- GrowthChartData: 归一化数据转换模型（x,y ∈ [0,1]）、niceStep刻度算法、Y轴紧贴数据范围
+- TtGrowthChart: Compose Canvas自绘曲线图组件（贝塞尔平滑曲线、虚线网格、点击Tooltip、横向滚动）
+- GrowthScreen集成: 卡片展开显示成长曲线图（替换占位文本）
+- 字符串资源: growth_curve_single_hint（单数据点提示）
+
+### Added — Phase 2 疫苗记录与提醒
+
+- Domain Model: Vaccination（含 isAdministered/isPending/isOverdue 派生属性）
+- Repository 接口: VaccinationRepository（6方法：按儿童查询、已接种、待接种、逾期、CRUD）
+- Data Entity: VaccinationEntity（外键关联 ChildEntity，7个索引优化查询）
+- DAO: VaccinationDao（软删除查询、已接种/待接种/逾期筛选、计数查询）
+- Mapper: VaccinationMapper（Entity ↔ Domain 双向映射）
+- Repository 实现: VaccinationRepositoryImpl（LocalDate.now() 逾期查询）
+- DB Migration: v2→v3 新增 vaccinations 表 + 7索引
+- DI 配置: RepositoryModule 绑定 VaccinationRepository + VaccinationDao provider
+- UseCase: GetVaccinationsUseCase（4方法：全部/已接种/待接种/逾期）
+- UseCase: SaveVaccinationUseCase（create/update）、DeleteVaccinationUseCase（软删除）
+- ViewModel: VaccinationViewModel（加载/保存/标记已接种/删除/表单管理）
+- UiState: VaccinationUiState（administeredVaccinations/pendingVaccinations/overdueVaccinations派生属性）+ VaccinationFormState
+- Screen: VaccinationScreen（逾期提醒+待接种+已接种列表+添加BottomSheet）
+- 导航路由: Screen.Vaccination（含childId参数）、GrowthScreen疫苗入口
+- GrowthScreen增强: 预期里程碑提醒区段（tertiaryContainer色）、疫苗记录入口卡片
+- 字符串资源: 20+条疫苗记录+成长提醒中文字符串
+- 单元测试: VaccinationMapperTest、VaccinationRepositoryImplTest、GetVaccinationsUseCaseTest、SaveVaccinationUseCaseTest、DeleteVaccinationUseCaseTest、VaccinationUiStateTest
+- 单元测试: GrowthChartDataTest（16个测试覆盖空列表、单点、多点、相同值、niceStep、formatValue、归一化边界）
 
 ## [0.1.1] - 2026-10-01
 

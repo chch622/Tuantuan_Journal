@@ -9,6 +9,7 @@ import com.tuantuan.journal.data.local.db.dao.GrowthRecordDao
 import com.tuantuan.journal.data.local.db.dao.MediaItemDao
 import com.tuantuan.journal.data.local.db.dao.MilestoneDao
 import com.tuantuan.journal.data.local.db.dao.TagDao
+import com.tuantuan.journal.data.local.db.dao.VaccinationDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -35,7 +36,7 @@ object DatabaseModule {
             TuantuanDatabase::class.java,
             "tuantuan_journal.db"
         )
-            .addMigrations(TuantuanDatabase.MIGRATION_1_2)
+            .addMigrations(TuantuanDatabase.MIGRATION_1_2, TuantuanDatabase.MIGRATION_2_3)
             .build()
 
     @Provides
@@ -55,4 +56,7 @@ object DatabaseModule {
 
     @Provides
     fun provideMilestoneDao(db: TuantuanDatabase): MilestoneDao = db.milestoneDao()
+
+    @Provides
+    fun provideVaccinationDao(db: TuantuanDatabase): VaccinationDao = db.vaccinationDao()
 }

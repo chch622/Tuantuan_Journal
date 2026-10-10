@@ -112,13 +112,13 @@
 | 体重记录 | P0 | 记录和展示体重变化 | ✅ 已完成 |
 | 头围记录 | P1 | 记录头围变化 | ✅ 已完成 |
 | 鞋码记录 | P1 | 记录鞋码变化 | ✅ 已完成 |
-| 成长曲线图 | P0 | 可视化成长数据 | 🔲 待实现 |
+| 成长曲线图 | P0 | 可视化成长数据 | ✅ 已完成 |
 | 里程碑记录 | P0 | 记录第一次（走路、说话等） | ✅ 已完成 |
 | 里程碑分类 | P0 | 按类别筛选里程碑 | ✅ 已完成 |
 | 里程碑达成 | P0 | 标记里程碑完成 | ✅ 已完成 |
-| 里程碑提醒 | P1 | 提醒预期里程碑 | 🔲 待实现 |
-| 疫苗记录 | P1 | 记录疫苗接种 | 🔲 待实现 |
-| 疫苗提醒 | P1 | 提醒接种计划 | 🔲 待实现 |
+| 里程碑提醒 | P1 | 提醒预期里程碑 | ✅ 已完成 |
+| 疫苗记录 | P1 | 记录疫苗接种 | ✅ 已完成 |
+| 疫苗提醒 | P1 | 提醒接种计划 | ✅ 已完成 |
 
 ### 4.2 技术任务
 
@@ -137,6 +137,17 @@
 | Screen UI | GrowthScreen + MilestoneScreen | ✅ 已完成 |
 | 导航路由 | Growth + Milestone 路由注册 | ✅ 已完成 |
 | 单元测试 | Mapper/Repository/UseCase/UiState 测试 | ✅ 已完成 |
+| Vaccination Model | Vaccination Domain Model + 派生属性 | ✅ 已完成 |
+| Vaccination Entity/DAO | VaccinationEntity + VaccinationDao | ✅ 已完成 |
+| Vaccination Mapper | VaccinationMapper 双向映射 | ✅ 已完成 |
+| Vaccination Repository | VaccinationRepository 接口 + 实现 | ✅ 已完成 |
+| DB Migration v2→v3 | 新增 vaccinations 表 + 7索引 | ✅ 已完成 |
+| Vaccination DI | RepositoryModule 绑定 + Dao provider | ✅ 已完成 |
+| Vaccination UseCase | Get/Save/Delete UseCases | ✅ 已完成 |
+| Vaccination ViewModel | VaccinationViewModel | ✅ 已完成 |
+| Vaccination UiState | VaccinationUiState + FormState | ✅ 已完成 |
+| Vaccination Screen UI | VaccinationScreen + 导航路由 | ✅ 已完成 |
+| Vaccination 单元测试 | Mapper/Repository/UseCase/UiState 测试 | ✅ 已完成 |
 
 ### 4.3 验收标准
 

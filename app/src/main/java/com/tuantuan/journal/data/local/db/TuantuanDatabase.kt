@@ -11,6 +11,7 @@ import com.tuantuan.journal.data.local.db.dao.GrowthRecordDao
 import com.tuantuan.journal.data.local.db.dao.MediaItemDao
 import com.tuantuan.journal.data.local.db.dao.MilestoneDao
 import com.tuantuan.journal.data.local.db.dao.TagDao
+import com.tuantuan.journal.data.local.db.dao.VaccinationDao
 import com.tuantuan.journal.data.local.db.entity.ChildEntity
 import com.tuantuan.journal.data.local.db.entity.DiaryEntryEntity
 import com.tuantuan.journal.data.local.db.entity.EntryTagEntity
@@ -18,6 +19,7 @@ import com.tuantuan.journal.data.local.db.entity.GrowthRecordEntity
 import com.tuantuan.journal.data.local.db.entity.MediaItemEntity
 import com.tuantuan.journal.data.local.db.entity.MilestoneEntity
 import com.tuantuan.journal.data.local.db.entity.TagEntity
+import com.tuantuan.journal.data.local.db.entity.VaccinationEntity
 
 @Database(
     entities = [
@@ -27,9 +29,10 @@ import com.tuantuan.journal.data.local.db.entity.TagEntity
         TagEntity::class,
         EntryTagEntity::class,
         GrowthRecordEntity::class,
-        MilestoneEntity::class
+        MilestoneEntity::class,
+        VaccinationEntity::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = true
 )
 @TypeConverters(Converters::class)
@@ -40,6 +43,7 @@ abstract class TuantuanDatabase : RoomDatabase() {
     abstract fun tagDao(): TagDao
     abstract fun growthRecordDao(): GrowthRecordDao
     abstract fun milestoneDao(): MilestoneDao
+    abstract fun vaccinationDao(): VaccinationDao
 
     companion object {
         /**
@@ -104,6 +108,45 @@ abstract class TuantuanDatabase : RoomDatabase() {
                 db.execSQL("CREATE INDEX IF NOT EXISTS `index_milestones_isDeleted` ON `milestones` (`isDeleted`)")
                 db.execSQL("CREATE INDEX IF NOT EXISTS `index_milestones_childId_isDeleted` ON `milestones` (`childId`, `isDeleted`)")
                 db.execSQL("CREATE INDEX IF NOT EXISTS `index_milestones_childId_category_isDeleted` ON `milestones` (`childId`, `category`, `isDeleted`)")
+            }
+        }
+
+        /**
+         * Migration v2 → v3：添加疫苗记录表。
+         *
+         * 遵循 DATA_MODEL.md 第6节 — 禁止 fallbackToDestructiveMigration，
+         * 每次 schema 变更必须提供显式 Migration。
+         */
+        val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                // 创建 vaccinations 表
+                db.execSQL("""
+                    CREATE TABLE IF NOT EXISTS `vaccinations` (
+                        `id` TEXT NOT NULL,
+                        `childId` TEXT NOT NULL,
+                        `vaccineName` TEXT NOT NULL,
+                        `doseNumber` INTEGER,
+                        `administeredDate` TEXT,
+                        `scheduledDate` TEXT,
+                        `location` TEXT,
+                        `batchNumber` TEXT,
+                        `notes` TEXT,
+                        `isDeleted` INTEGER NOT NULL DEFAULT 0,
+                        `createdAt` INTEGER NOT NULL,
+                        `updatedAt` INTEGER NOT NULL,
+                        PRIMARY KEY(`id`),
+                        FOREIGN KEY(`childId`) REFERENCES `children`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE
+                    )
+                """.trimIndent())
+
+                // 创建 vaccinations 索引
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_vaccinations_childId` ON `vaccinations` (`childId`)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_vaccinations_administeredDate` ON `vaccinations` (`administeredDate`)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_vaccinations_scheduledDate` ON `vaccinations` (`scheduledDate`)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_vaccinations_isDeleted` ON `vaccinations` (`isDeleted`)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_vaccinations_childId_isDeleted` ON `vaccinations` (`childId`, `isDeleted`)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_vaccinations_childId_administeredDate_isDeleted` ON `vaccinations` (`childId`, `administeredDate`, `isDeleted`)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_vaccinations_childId_scheduledDate_isDeleted` ON `vaccinations` (`childId`, `scheduledDate`, `isDeleted`)")
             }
         }
     }

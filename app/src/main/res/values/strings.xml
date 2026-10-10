@@ -195,6 +195,7 @@
     <string name="growth_empty_desc">记录第一次身高体重，开始追踪成长曲线</string>
     <string name="growth_empty_action">记录成长</string>
     <string name="growth_curve_hint">再记录一次就能看到成长曲线了</string>
+    <string name="growth_curve_single_hint">继续记录更多数据，曲线将更加清晰</string>
     <string name="growth_measure_date">测量日期</string>
     <string name="growth_notes">备注（可选）</string>
     <string name="growth_save">保存</string>
@@ -225,6 +226,34 @@
     <string name="milestone_category_empty_desc">试试其他分类或添加新里程碑</string>
     <string name="milestone_pending_title">待记录</string>
     <string name="milestone_achieved_title">已达成</string>
+
+    <!-- 疫苗记录页面 -->
+    <string name="vaccination_title">疫苗记录</string>
+    <string name="vaccination_empty_title">还没有疫苗记录</string>
+    <string name="vaccination_empty_desc">记录团团的疫苗接种情况</string>
+    <string name="vaccination_empty_action">添加疫苗记录</string>
+    <string name="vaccination_add">添加疫苗</string>
+    <string name="vaccination_vaccine_name">疫苗名称</string>
+    <string name="vaccination_dose_number">第几针</string>
+    <string name="vaccination_scheduled_date">计划接种日期</string>
+    <string name="vaccination_administered_date">接种日期</string>
+    <string name="vaccination_location">接种地点</string>
+    <string name="vaccination_batch_number">批号</string>
+    <string name="vaccination_notes">备注（可选）</string>
+    <string name="vaccination_save">保存</string>
+    <string name="vaccination_administered">已接种</string>
+    <string name="vaccination_pending">待接种</string>
+    <string name="vaccination_overdue">逾期未接种</string>
+    <string name="vaccination_mark_administered">标记已接种</string>
+    <string name="vaccination_dose_format">第%1$d针</string>
+    <string name="vaccination_pending_title">待接种</string>
+    <string name="vaccination_administered_title">已接种</string>
+    <string name="vaccination_overdue_hint">以下疫苗已超过计划接种日期</string>
+
+    <!-- 成长页面 - 预期里程碑与疫苗入口 -->
+    <string name="growth_expected_milestone_hint">即将到来的里程碑</string>
+    <string name="growth_expected_age_months">预期 %1$d 个月</string>
+    <string name="growth_vaccination_desc">查看和管理疫苗接种记录</string>
 
     <!-- 验证错误 -->
     <string name="error_validation_value">请输入有效的数值</string>

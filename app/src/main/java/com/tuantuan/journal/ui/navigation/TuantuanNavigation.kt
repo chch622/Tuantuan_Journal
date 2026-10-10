@@ -19,6 +19,7 @@ import com.tuantuan.journal.ui.screen.diary.DiaryEditScreen
 import com.tuantuan.journal.ui.screen.diary.DiaryListScreen
 import com.tuantuan.journal.ui.screen.growth.GrowthScreen
 import com.tuantuan.journal.ui.screen.milestone.MilestoneScreen
+import com.tuantuan.journal.ui.screen.vaccination.VaccinationScreen
 import com.tuantuan.journal.ui.screen.home.HomeScreen
 import com.tuantuan.journal.ui.screen.profile.ProfileScreen
 import com.tuantuan.journal.ui.screen.record.RecordScreen
@@ -97,6 +98,9 @@ fun TuantuanNavigation(
             GrowthScreen(
                 onMilestoneViewAll = { childId ->
                     navController.navigate(Screen.Milestone.createRoute(childId))
+                },
+                onVaccinationViewAll = { childId ->
+                    navController.navigate(Screen.Vaccination.createRoute(childId))
                 }
             )
         }
@@ -244,6 +248,9 @@ fun TuantuanNavigation(
             GrowthScreen(
                 onMilestoneViewAll = { id ->
                     navController.navigate(Screen.Milestone.createRoute(id))
+                },
+                onVaccinationViewAll = { id ->
+                    navController.navigate(Screen.Vaccination.createRoute(id))
                 }
             )
         }
@@ -253,9 +260,19 @@ fun TuantuanNavigation(
             route = Screen.Milestone.route,
             arguments = listOf(navArgument("childId") { type = NavType.StringType })
         ) {
+            val childId = it.arguments?.getString("childId") ?: return@composable
             MilestoneScreen(
                 onAddMilestone = { /* TODO: 导航到添加里程碑表单 */ }
             )
+        }
+
+        // 疫苗记录页
+        composable(
+            route = Screen.Vaccination.route,
+            arguments = listOf(navArgument("childId") { type = NavType.StringType })
+        ) {
+            val childId = it.arguments?.getString("childId") ?: return@composable
+            VaccinationScreen(childId = childId)
         }
     }
 }

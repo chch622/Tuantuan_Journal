@@ -8,12 +8,14 @@ import com.tuantuan.journal.data.repository.GrowthRepositoryImpl
 import com.tuantuan.journal.data.repository.MediaRepositoryImpl
 import com.tuantuan.journal.data.repository.MilestoneRepositoryImpl
 import com.tuantuan.journal.data.repository.TagRepositoryImpl
+import com.tuantuan.journal.data.repository.VaccinationRepositoryImpl
 import com.tuantuan.journal.domain.repository.ChildRepository
 import com.tuantuan.journal.domain.repository.DiaryRepository
 import com.tuantuan.journal.domain.repository.GrowthRepository
 import com.tuantuan.journal.domain.repository.MediaRepository
 import com.tuantuan.journal.domain.repository.MilestoneRepository
 import com.tuantuan.journal.domain.repository.TagRepository
+import com.tuantuan.journal.domain.repository.VaccinationRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -47,6 +49,10 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindMilestoneRepository(impl: MilestoneRepositoryImpl): MilestoneRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindVaccinationRepository(impl: VaccinationRepositoryImpl): VaccinationRepository
 
     @Binds
     @Singleton

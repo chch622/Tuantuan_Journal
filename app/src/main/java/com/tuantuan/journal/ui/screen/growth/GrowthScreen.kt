@@ -20,6 +20,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Straighten
 import androidx.compose.material.icons.outlined.MonitorWeight
+import androidx.compose.material.icons.outlined.Vaccines
+import androidx.compose.material.icons.outlined.ChevronRight
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -49,6 +51,7 @@ import com.tuantuan.journal.domain.model.Milestone
 import com.tuantuan.journal.domain.model.MilestoneCategory
 import com.tuantuan.journal.ui.component.AgeDisplay
 import com.tuantuan.journal.ui.component.TtEmptyState
+import com.tuantuan.journal.ui.component.TtGrowthChart
 import com.tuantuan.journal.ui.component.TtLoadingIndicator
 import com.tuantuan.journal.ui.theme.TuantuanSpacing
 import java.time.format.DateTimeFormatter
@@ -66,7 +69,8 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun GrowthScreen(
     viewModel: GrowthViewModel = hiltViewModel(),
-    onMilestoneViewAll: ((String) -> Unit)? = null
+    onMilestoneViewAll: ((String) -> Unit)? = null,
+    onVaccinationViewAll: ((String) -> Unit)? = null
 ) {
     val state by viewModel.state.collectAsState()
     val child = state.selectedChild
@@ -143,6 +147,30 @@ fun GrowthScreen(
                     )
                 }
             }
+
+            // §7 预期里程碑提醒
+            if (child != null) {
+                val expectedMilestones = state.recentMilestones.filter {
+                    it.isExpected && it.achievedDate == null
+                }
+                if (expectedMilestones.isNotEmpty()) {
+                    item(key = "expected_milestones") {
+                        ExpectedMilestoneReminderSection(
+                            milestones = expectedMilestones,
+                            childBirthDate = child.birthDate
+                        )
+                    }
+                }
+            }
+
+            // §8 疫苗记录入口
+            if (child != null) {
+                item(key = "vaccination_entry") {
+                    VaccinationEntrySection(
+                        onViewAllClick = { onVaccinationViewAll?.invoke(child.id) }
+                    )
+                }
+            }
         }
     }
 
@@ -207,6 +235,7 @@ private fun GrowthDataCardsSection(
             GrowthDataCard(
                 type = type,
                 latestRecord = state.latestRecord(type),
+                records = state.recordsOfType(type),
                 isExpanded = state.expandedCardType == type,
                 onClick = { onCardClick(type) },
                 onStartRecordClick = { onStartRecordClick(type) },
@@ -221,6 +250,7 @@ private fun GrowthDataCardsSection(
 private fun GrowthDataCard(
     type: GrowthType,
     latestRecord: com.tuantuan.journal.domain.model.GrowthRecord?,
+    records: List<com.tuantuan.journal.domain.model.GrowthRecord>,
     isExpanded: Boolean,
     onClick: () -> Unit,
     onStartRecordClick: () -> Unit,
@@ -312,17 +342,17 @@ private fun GrowthDataCard(
                 }
             }
 
-            // 展开曲线区域（Phase 2 基础实现，曲线绘制将在后续完善）
+            // 展开曲线区域 — GROWTH_PAGE.md §5 成长曲线图
             AnimatedVisibility(
                 visible = isExpanded,
                 enter = expandVertically(),
                 exit = shrinkVertically()
             ) {
-                if (latestRecord != null) {
-                    Text(
-                        text = stringResource(R.string.growth_curve_hint),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                if (records.isNotEmpty()) {
+                    val chartData = remember(records) { GrowthChartData.fromRecords(records) }
+                    TtGrowthChart(
+                        chartData = chartData,
+                        unit = unit,
                         modifier = Modifier.padding(top = TuantuanSpacing.SM)
                     )
                 }
@@ -535,5 +565,100 @@ private fun formatGrowthValue(value: Double): String {
         value.toLong().toString()
     } else {
         String.format("%.1f", value)
+    }
+}
+
+/** §7 预期里程碑提醒区段 */
+@Composable
+private fun ExpectedMilestoneReminderSection(
+    milestones: List<Milestone>,
+    childBirthDate: java.time.LocalDate
+) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.medium,
+        color = MaterialTheme.colorScheme.tertiaryContainer
+    ) {
+        Column(modifier = Modifier.padding(TuantuanSpacing.Base)) {
+            Text(
+                text = stringResource(R.string.growth_expected_milestone_hint),
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.onTertiaryContainer
+            )
+            Spacer(modifier = Modifier.height(TuantuanSpacing.XS))
+            milestones.take(3).forEach { milestone ->
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(TuantuanSpacing.XS),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = milestoneCategoryIcon(milestone.category),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = milestone.title,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onTertiaryContainer
+                        )
+                        if (milestone.expectedAgeMonths != null) {
+                            Text(
+                                text = stringResource(
+                                    R.string.growth_expected_age_months,
+                                    milestone.expectedAgeMonths
+                                ),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onTertiaryContainer
+                            )
+                        }
+                    }
+                }
+                Spacer(modifier = Modifier.height(TuantuanSpacing.XS))
+            }
+        }
+    }
+}
+
+/** §8 疫苗记录入口区段 */
+@Composable
+private fun VaccinationEntrySection(
+    onViewAllClick: () -> Unit
+) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.large,
+        color = MaterialTheme.colorScheme.surfaceVariant,
+        onClick = onViewAllClick
+    ) {
+        Row(
+            modifier = Modifier.padding(TuantuanSpacing.Base),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(TuantuanSpacing.SM)
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.Vaccines,
+                contentDescription = null,
+                modifier = Modifier.size(24.dp),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = stringResource(R.string.vaccination_title),
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Text(
+                    text = stringResource(R.string.growth_vaccination_desc),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+            Icon(
+                imageVector = Icons.Outlined.ChevronRight,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
     }
 }
