@@ -28,6 +28,8 @@ data class DiaryFormState(
     val selectedTagIds: Set<String> = emptySet(),
     val availableTags: List<Tag> = emptyList(),
     val selectedMediaUris: List<Uri> = emptyList(),
+    val selectedVideoUris: List<Uri> = emptyList(),
+    val selectedAudioUris: List<Uri> = emptyList(),
     val isSaving: Boolean = false,
     val savedSuccessfully: Boolean = false,
     val error: UiError? = null

@@ -50,7 +50,7 @@ class MediaFileManager @Inject constructor(
         private const val MAX_PHOTO_SIZE_BYTES = 20L * 1024 * 1024       // 20 MB
         private const val MAX_VIDEO_SIZE_BYTES = 500L * 1024 * 1024     // 500 MB
         private const val MAX_AUDIO_SIZE_BYTES = 100L * 1024 * 1024     // 100 MB
-        private const val MAX_PHOTOS_PER_ENTRY = 10
+        private const val MAX_PHOTOS_PER_ENTRY = 20
         private const val MAX_VIDEOS_PER_ENTRY = 3
         private const val MAX_AUDIOS_PER_ENTRY = 5
     }
@@ -95,8 +95,11 @@ class MediaFileManager @Inject constructor(
         // 5. 生成缩略图（照片/视频）
         val thumbnailPath = generateThumbnail(targetFile, mediaType, uuid)
 
-        // 6. 获取图片尺寸
+        // 6. 获取图片/视频尺寸
         val dimensions = getImageDimensions(targetFile, mediaType)
+
+        // 7. 提取视频/音频时长 — Phase 3 P0
+        val durationMs = extractDuration(targetFile, mediaType)
 
         MediaFileInfo(
             filePath = targetFile.absolutePath,
@@ -105,7 +108,8 @@ class MediaFileManager @Inject constructor(
             mimeType = mimeType,
             width = dimensions?.first,
             height = dimensions?.second,
-            thumbnailPath = thumbnailPath
+            thumbnailPath = thumbnailPath,
+            durationMs = durationMs
         )
     }
 
@@ -278,13 +282,50 @@ class MediaFileManager @Inject constructor(
     }
 
     private fun getImageDimensions(file: File, mediaType: MediaType): Pair<Int, Int>? {
-        if (mediaType != MediaType.PHOTO) return null
+        if (mediaType == MediaType.AUDIO) return null
         return try {
-            val options = BitmapFactory.Options().apply { inJustDecodeBounds = true }
-            BitmapFactory.decodeFile(file.absolutePath, options)
-            options.outWidth to options.outHeight
+            when (mediaType) {
+                MediaType.PHOTO -> {
+                    val options = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+                    BitmapFactory.decodeFile(file.absolutePath, options)
+                    options.outWidth to options.outHeight
+                }
+                MediaType.VIDEO -> {
+                    // 视频尺寸通过 MediaMetadataRetriever 获取
+                    val retriever = android.media.MediaMetadataRetriever()
+                    try {
+                        retriever.setDataSource(file.absolutePath)
+                        val width = retriever.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH)?.toIntOrNull()
+                        val height = retriever.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT)?.toIntOrNull()
+                        if (width != null && height != null) width to height else null
+                    } finally {
+                        retriever.release()
+                    }
+                }
+                else -> null
+            }
         } catch (e: Exception) {
             null
+        }
+    }
+
+    /**
+     * 提取视频/音频时长（毫秒）— Phase 3 P0
+     * 使用 MediaMetadataRetriever 获取 METADATA_KEY_DURATION。
+     */
+    private fun extractDuration(file: File, mediaType: MediaType): Long? {
+        if (mediaType != MediaType.VIDEO && mediaType != MediaType.AUDIO) return null
+        return try {
+            val retriever = android.media.MediaMetadataRetriever()
+            try {
+                retriever.setDataSource(file.absolutePath)
+                val duration = retriever.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_DURATION)
+                duration?.toLongOrNull()
+            } finally {
+                retriever.release()
+            }
+        } catch (e: Exception) {
+            null // 时长提取失败不影响主流程
         }
     }
 
@@ -304,7 +345,8 @@ data class MediaFileInfo(
     val mimeType: String,
     val width: Int?,
     val height: Int?,
-    val thumbnailPath: String?
+    val thumbnailPath: String?,
+    val durationMs: Long? = null
 )
 
 /**

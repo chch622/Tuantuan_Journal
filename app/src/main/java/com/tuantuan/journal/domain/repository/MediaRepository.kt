@@ -5,8 +5,10 @@ import kotlinx.coroutines.flow.Flow
 
 interface MediaRepository {
     fun getMediaByEntry(entryId: String): Flow<List<MediaItem>>
+    fun getAllMedia(): Flow<List<MediaItem>>
     suspend fun addMedia(mediaItem: MediaItem): String
     suspend fun deleteMedia(id: String)
     suspend fun deleteMediaByEntry(entryId: String)
     suspend fun getMediaCount(entryId: String): Int
+    suspend fun updateSortOrder(id: String, sortOrder: Int)
 }

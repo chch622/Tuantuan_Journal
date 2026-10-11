@@ -47,7 +47,10 @@ class SaveMediaUseCase @Inject constructor(
         // 2. 保存物理文件
         val fileInfo: MediaFileInfo = mediaFileManager.saveMedia(sourceUri, entryId, mediaType)
 
-        // 3. 构建数据库记录
+        // 3. 获取当前排序序号（基于已有媒体数量）
+        val currentSortOrder = mediaRepository.getMediaCount(entryId)
+
+        // 4. 构建数据库记录
         val now = Instant.now()
         val mediaItem = MediaItem(
             id = UUID.randomUUID().toString(),
@@ -59,15 +62,15 @@ class SaveMediaUseCase @Inject constructor(
             mimeType = fileInfo.mimeType,
             width = fileInfo.width,
             height = fileInfo.height,
-            duration = null, // 视频时长需额外提取，后续迭代补充
+            duration = fileInfo.durationMs,
             thumbnailPath = fileInfo.thumbnailPath,
-            sortOrder = 0, // 排序由 UI 层设置
+            sortOrder = currentSortOrder,
             isDeleted = false,
             createdAt = now,
             updatedAt = now
         )
 
-        // 4. 保存数据库索引
+        // 5. 保存数据库索引
         mediaRepository.addMedia(mediaItem)
 
         return mediaItem
@@ -86,7 +89,7 @@ class SaveMediaUseCase @Inject constructor(
     }
 
     companion object {
-        private const val MAX_PHOTOS_PER_ENTRY = 10
+        private const val MAX_PHOTOS_PER_ENTRY = 20
         private const val MAX_VIDEOS_PER_ENTRY = 3
         private const val MAX_AUDIOS_PER_ENTRY = 5
     }

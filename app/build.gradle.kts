@@ -13,8 +13,8 @@ android {
         applicationId = "com.tuantuan.journal"
         minSdk = 26
         targetSdk = 35
-        versionCode = 3
-        versionName = "0.1.3"
+        versionCode = 4
+        versionName = "0.2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -112,6 +112,10 @@ dependencies {
 
     // Coil
     implementation(libs.coil.compose)
+
+    // Media3 (video/audio playback — AGENTS.md §3 技术栈指定)
+    implementation(libs.media3.exoplayer)
+    implementation(libs.media3.ui)
 
     // Testing
     testImplementation(libs.junit)

@@ -33,4 +33,5 @@ sealed class Screen(val route: String) {
     data object Vaccination : Screen("children/{childId}/vaccinations") {
         fun createRoute(childId: String) = "children/$childId/vaccinations"
     }
+    data object MediaManagement : Screen("media/management")
 }

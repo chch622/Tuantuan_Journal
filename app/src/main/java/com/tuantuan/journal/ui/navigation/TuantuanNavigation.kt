@@ -21,6 +21,7 @@ import com.tuantuan.journal.ui.screen.growth.GrowthScreen
 import com.tuantuan.journal.ui.screen.milestone.MilestoneScreen
 import com.tuantuan.journal.ui.screen.vaccination.VaccinationScreen
 import com.tuantuan.journal.ui.screen.home.HomeScreen
+import com.tuantuan.journal.ui.screen.media.MediaManagementScreen
 import com.tuantuan.journal.ui.screen.profile.ProfileScreen
 import com.tuantuan.journal.ui.screen.record.RecordScreen
 import com.tuantuan.journal.ui.screen.search.SearchScreen
@@ -106,7 +107,9 @@ fun TuantuanNavigation(
         }
 
         composable(BottomNavItem.Profile.route) {
-            ProfileScreen()
+            ProfileScreen(
+                onMediaManagementClick = { navController.navigate(Screen.MediaManagement.route) }
+            )
         }
 
         // ===== 子页面路由 =====
@@ -237,6 +240,10 @@ fun TuantuanNavigation(
 
         composable(Screen.TagManage.route) {
             TagManageScreen(onBackClick = { navController.popBackStack() })
+        }
+
+        composable(Screen.MediaManagement.route) {
+            MediaManagementScreen(onBackClick = { navController.popBackStack() })
         }
 
         // 成长详情页

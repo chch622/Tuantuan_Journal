@@ -16,12 +16,16 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Reorder
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import com.tuantuan.journal.ui.component.DeleteConfirmDialog
 import com.tuantuan.journal.ui.component.TtErrorState
 import com.tuantuan.journal.ui.component.TtLoadingIndicator
 import com.tuantuan.journal.ui.component.TtPhotoGallery
 import com.tuantuan.journal.ui.component.TtPhotoViewer
+import com.tuantuan.journal.ui.component.TtAudioGallery
+import com.tuantuan.journal.ui.component.TtVideoGallery
+import com.tuantuan.journal.ui.component.TtVideoPlayer
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -64,6 +68,13 @@ fun DiaryDetailScreen(
     var showPhotoViewer by remember { mutableStateOf(false) }
     var photoViewerIndex by remember { mutableStateOf(0) }
 
+    // 全屏视频播放状态 — Phase 3 P0
+    var showVideoPlayer by remember { mutableStateOf(false) }
+    var videoPlayerPath by remember { mutableStateOf("") }
+
+    // 照片排序模式 — Phase 3 P1
+    var isReorderMode by remember { mutableStateOf(false) }
+
     // 过滤出照片类型的媒体
     val photoItems = remember(state.entry) {
         state.entry?.mediaItems?.filter { it.mediaType == MediaType.PHOTO } ?: emptyList()
@@ -72,12 +83,31 @@ fun DiaryDetailScreen(
         photoItems.map { it.filePath }
     }
 
+    // 过滤出视频类型的媒体 — Phase 3 P0
+    val videoItems = remember(state.entry) {
+        state.entry?.mediaItems?.filter { it.mediaType == MediaType.VIDEO } ?: emptyList()
+    }
+
+    // 过滤出音频类型的媒体 — Phase 3 P1
+    val audioItems = remember(state.entry) {
+        state.entry?.mediaItems?.filter { it.mediaType == MediaType.AUDIO } ?: emptyList()
+    }
+
     // 全屏照片查看器
     if (showPhotoViewer && photoPaths.isNotEmpty()) {
         TtPhotoViewer(
             photos = photoPaths,
             initialIndex = photoViewerIndex,
             onBackClick = { showPhotoViewer = false }
+        )
+        return
+    }
+
+    // 全屏视频播放器 — Phase 3 P0, MEDIA_UX.md §2.2
+    if (showVideoPlayer && videoPlayerPath.isNotEmpty()) {
+        TtVideoPlayer(
+            videoPath = videoPlayerPath,
+            onBackClick = { showVideoPlayer = false }
         )
         return
     }
@@ -92,6 +122,16 @@ fun DiaryDetailScreen(
                     }
                 },
                 actions = {
+                    // 照片排序按钮 — Phase 3 P1（仅当有2张以上照片时显示）
+                    if (photoItems.size >= 2) {
+                        IconButton(onClick = { isReorderMode = !isReorderMode }) {
+                            Icon(
+                                Icons.Default.Reorder,
+                                contentDescription = stringResource(R.string.media_reorder),
+                                tint = if (isReorderMode) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
                     state.entry?.let { entry ->
                         IconButton(onClick = { viewModel.toggleFavorite(entry.id, !entry.isFavorite) }) {
                             Icon(
@@ -164,10 +204,35 @@ fun DiaryDetailScreen(
                     TtPhotoGallery(
                         photos = photoItems,
                         onPhotoClick = { index ->
-                            photoViewerIndex = index
-                            showPhotoViewer = true
+                            if (!isReorderMode) {
+                                photoViewerIndex = index
+                                showPhotoViewer = true
+                            }
+                        },
+                        isReorderMode = isReorderMode,
+                        onMovePhoto = { fromIndex, toIndex ->
+                            val updatedPhotos = photoItems.toMutableList()
+                            val item = updatedPhotos.removeAt(fromIndex)
+                            updatedPhotos.add(toIndex, item)
+                            viewModel.reorderMedia(updatedPhotos.map { it.id })
                         }
                     )
+                }
+
+                // 视频展示 — Phase 3 P0, MEDIA_UX.md §2.1
+                if (videoItems.isNotEmpty()) {
+                    TtVideoGallery(
+                        videos = videoItems,
+                        onVideoClick = { index ->
+                            videoPlayerPath = videoItems[index].filePath
+                            showVideoPlayer = true
+                        }
+                    )
+                }
+
+                // 音频展示 — Phase 3 P1, MEDIA_UX.md §3.3
+                if (audioItems.isNotEmpty()) {
+                    TtAudioGallery(audios = audioItems)
                 }
 
                 Spacer(Modifier.height(4.dp))

@@ -56,6 +56,30 @@
     <string name="media_remove_photo">移除照片</string>
     <string name="media_selected_photo">已选照片 %1$d</string>
     <string name="media_photo_index">照片 %1$d</string>
+    <string name="media_selected_video_count">已选 %1$d 个视频</string>
+    <string name="media_remove_video">移除视频</string>
+    <string name="media_video_index">视频 %1$d</string>
+    <string name="media_video_count">%1$d个视频</string>
+    <string name="media_video_play">播放</string>
+    <string name="media_video_pause">暂停</string>
+    <string name="media_audio_count">%1$d个音频</string>
+    <string name="media_selected_audio_count">已选 %1$d 个音频</string>
+    <string name="media_remove_audio">移除音频</string>
+    <string name="media_audio_index">音频 %1$d</string>
+    <string name="media_audio_play">播放</string>
+    <string name="media_audio_pause">暂停</string>
+    <string name="media_reorder">排序</string>
+    <string name="media_move_up">上移</string>
+    <string name="media_move_down">下移</string>
+    <string name="media_management">媒体管理</string>
+    <string name="media_filter_all">全部</string>
+    <string name="media_filter_photos">照片</string>
+    <string name="media_filter_videos">视频</string>
+    <string name="media_filter_audios">音频</string>
+    <string name="media_count_label">%1$d 个媒体</string>
+    <string name="media_empty">暂无媒体</string>
+    <string name="media_delete_title">删除媒体</string>
+    <string name="media_delete_confirm">确定删除「%1$s」吗？</string>
 
     <!-- 日记 -->
     <string name="diary_detail">日记详情</string>

@@ -53,6 +53,7 @@ import com.tuantuan.journal.domain.model.Weather
 import com.tuantuan.journal.ui.model.resolveMessage
 import com.tuantuan.journal.ui.component.TtLoadingIndicator
 import com.tuantuan.journal.ui.component.TtMediaAddBar
+import com.tuantuan.journal.ui.component.TtSelectedAudiosBar
 import com.tuantuan.journal.ui.component.TtSelectedPhotosBar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -70,10 +71,28 @@ fun DiaryEditScreen(
 
     // Photo Picker — MEDIA_UX.md §4.2
     val photoPickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickMultipleVisualMedia(10)
+        contract = ActivityResultContracts.PickMultipleVisualMedia(20)
     ) { uris: List<Uri> ->
         if (uris.isNotEmpty()) {
             viewModel.addSelectedPhotos(uris)
+        }
+    }
+
+    // Video Picker — Phase 3 P0, MEDIA_UX.md §4.2
+    val videoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickMultipleVisualMedia(3)
+    ) { uris: List<Uri> ->
+        if (uris.isNotEmpty()) {
+            viewModel.addSelectedVideos(uris)
+        }
+    }
+
+    // Audio Picker — Phase 3 P1, MEDIA_UX.md §4.3 (SAF)
+    val audioPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocument()
+    ) { uri: Uri? ->
+        if (uri != null) {
+            viewModel.addSelectedAudios(listOf(uri))
         }
     }
 
@@ -244,6 +263,14 @@ fun DiaryEditScreen(
                         photoPickerLauncher.launch(
                             PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
                         )
+                    },
+                    onVideoClick = {
+                        videoPickerLauncher.launch(
+                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.VideoOnly)
+                        )
+                    },
+                    onAudioClick = {
+                        audioPickerLauncher.launch(arrayOf("audio/*"))
                     }
                 )
 
@@ -262,6 +289,42 @@ fun DiaryEditScreen(
                     TtSelectedPhotosBar(
                         photoUris = formState.selectedMediaUris,
                         onRemovePhoto = { viewModel.removeSelectedPhoto(it) }
+                    )
+                }
+
+                // 已选视频预览 — Phase 3 P0
+                if (formState.selectedVideoUris.isNotEmpty()) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = stringResource(R.string.media_selected_video_count, formState.selectedVideoUris.size),
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    TtSelectedPhotosBar(
+                        photoUris = formState.selectedVideoUris,
+                        onRemovePhoto = { viewModel.removeSelectedVideo(it) }
+                    )
+                }
+
+                // 已选音频预览 — Phase 3 P1
+                if (formState.selectedAudioUris.isNotEmpty()) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = stringResource(R.string.media_selected_audio_count, formState.selectedAudioUris.size),
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    TtSelectedAudiosBar(
+                        audioUris = formState.selectedAudioUris,
+                        onRemoveAudio = { viewModel.removeSelectedAudio(it) }
                     )
                 }
 

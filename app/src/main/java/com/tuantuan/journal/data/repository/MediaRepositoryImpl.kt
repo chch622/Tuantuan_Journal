@@ -23,6 +23,11 @@ class MediaRepositoryImpl @Inject constructor(
             entities.map { MediaItemMapper.toDomain(it) }
         }
 
+    override fun getAllMedia(): Flow<List<MediaItem>> =
+        mediaItemDao.getAllMedia().map { entities ->
+            entities.map { MediaItemMapper.toDomain(it) }
+        }
+
     override suspend fun addMedia(mediaItem: MediaItem): String {
         mediaItemDao.insert(MediaItemMapper.toEntity(mediaItem))
         return mediaItem.id
@@ -44,4 +49,8 @@ class MediaRepositoryImpl @Inject constructor(
 
     override suspend fun getMediaCount(entryId: String): Int =
         mediaItemDao.getMediaByEntry(entryId).first().size
+
+    override suspend fun updateSortOrder(id: String, sortOrder: Int) {
+        mediaItemDao.updateSortOrder(id, sortOrder, Instant.now().toEpochMilli())
+    }
 }

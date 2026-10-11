@@ -27,7 +27,7 @@ import com.tuantuan.journal.R
  * [📷 照片]  [🎬 视频]  [🎙 语音]
  *
  * 不藏到多级菜单里，直接在日记表单中显示。
- * Phase 1 仅实现照片选择；视频和语音按钮为 Phase 3 占位。
+ * Phase 1 实现照片选择；Phase 3 实现视频选择；语音为 Phase 3 占位。
  */
 @Composable
 fun TtMediaAddBar(
@@ -57,10 +57,10 @@ fun TtMediaAddBar(
             )
         }
 
-        // 视频按钮 — Phase 3 占位
+        // 视频按钮 — Phase 3 P0
         FilledTonalButton(
             onClick = onVideoClick,
-            enabled = false
+            enabled = true
         ) {
             Icon(
                 imageVector = Icons.Outlined.VideoLibrary,
@@ -74,10 +74,10 @@ fun TtMediaAddBar(
             )
         }
 
-        // 语音按钮 — Phase 3 占位
+        // 语音按钮 — Phase 3 P1
         FilledTonalButton(
             onClick = onAudioClick,
-            enabled = false
+            enabled = true
         ) {
             Icon(
                 imageVector = Icons.Default.Mic,

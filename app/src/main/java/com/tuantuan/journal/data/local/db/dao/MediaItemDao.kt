@@ -31,4 +31,10 @@ interface MediaItemDao {
 
     @Query("DELETE FROM media_items WHERE entryId = :entryId")
     suspend fun deleteByEntry(entryId: String)
+
+    @Query("UPDATE media_items SET sortOrder = :sortOrder, updatedAt = :updatedAt WHERE id = :id")
+    suspend fun updateSortOrder(id: String, sortOrder: Int, updatedAt: Long)
+
+    @Query("SELECT * FROM media_items WHERE isDeleted = 0 ORDER BY createdAt DESC")
+    fun getAllMedia(): Flow<List<MediaItemEntity>>
 }

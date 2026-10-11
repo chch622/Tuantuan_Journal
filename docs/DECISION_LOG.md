@@ -125,4 +125,25 @@
 
 ---
 
-*本文件最后更新：Phase 0 — 项目初始化*
+### D-011: 使用 Media3 ExoPlayer
+
+- **日期**: 2026-10-11
+- **状态**: 已决定
+- **背景**: Phase 3 骒体增强需要视频和音频播放能力
+- **决策**: 使用 AndroidX Media3 ExoPlayer
+- **原因**: Android 官方媒体播放库（AGENTS.md §3 技术栈已指定），Compose 支持良好，离线能力不受影响，维护活跃
+- **替代方案**: Android MediaPlayer（API 旧、功能有限）、VLC（体积大、非官方）
+- **影响**: 新增 `media3-exoplayer` 和 `media3-ui` 两个依赖，App 体积约增加 800KB
+
+- **依赖审查（AGENTS.md §8）**：
+  - [x] 是否必要？ — 是，Phase 3 视频/音频播放核心需求
+  - [x] Android 宧方是否已有实现？ — 是，Media3 是 Android 宧方库
+  - [x] 维护成本如何？ — 低，Google 官方维护
+  - [x] App 体积影响？ — 约 800KB，可接受
+  - [x] 离线能力是否受影响？ — 否，完全离线
+  - [x] 性能影响？ — 低，ExoPlayer 性能优化良好
+  - [x] �期兼容性？ — 好，AndroidX 官方库
+
+---
+
+*本文件最后更新：Phase 3 — 媒体增强启动*

@@ -5,6 +5,28 @@
 
 ---
 
+## [0.2.0] - 2026-10-11
+
+### Added — Phase 3 媒体增强
+
+- **P0 视频添加**: SAF 视频选择器（OpenDocument + video/*）、TtSelectedPhotosBar 视频预览复用、DiaryViewModel addSelectedVideos/removeSelectedVideo、SaveMediaUseCase 视频保存（MediaType.VIDEO）、MediaFileManager 视频处理（500MB 上限、缩略图生成）
+- **P0 视频播放**: TtVideoPlayer（Media3 ExoPlayer 全屏播放器）、TtVideoThumbnailOverlay（播放图标+时长标签）、TtVideoGallery（视频展示区）、DiaryDetailScreen 全屏视频播放集成
+- **P1 音频添加**: SAF 音频选择器（OpenDocument + audio/*）、TtSelectedAudiosBar（已选音频预览栏）、DiaryViewModel addSelectedAudios/removeSelectedAudio、SaveMediaUseCase 音频保存（MediaType.AUDIO，5个上限）
+- **P1 音频播放**: TtAudioPlayer（极简内联播放器，Media3 ExoPlayer + Slider 进度条）、TtAudioGallery（音频卡片列表，AudioFile 图标+文件名+时长·日期+播放器）、DiaryDetailScreen 音频展示区集成
+- **P1 多选照片**: 照片上限从 10 提升至 20（MEDIA_UX.md §4.2）、PickMultipleVisualMedia(20)、SaveMediaUseCase/MediaFileManager MAX_PHOTOS_PER_ENTRY 更新
+- **P1 照片排序**: SaveMediaUseCase sortOrder 自动赋值（基于已有媒体数量）、MediaItemDao updateSortOrder、MediaRepository updateSortOrder、ReorderMediaUseCase、DiaryViewModel reorderMedia、TtPhotoGallery 排序模式（上/下箭头按钮）、DiaryDetailScreen 排序模式切换
+- **P1 媒体管理**: MediaManagementScreen（3列网格+类型筛选+删除确认）、MediaManagementViewModel（类型筛选+删除）、GetAllMediaUseCase、MediaItemDao getAllMedia、MediaRepository getAllMedia、Screen.MediaManagement 路由、ProfileScreen 媒体管理入口
+- Media3 ExoPlayer 依赖（androidx.media3:media3-exoplayer:1.5.1）
+- DECISION_LOG D-011: Media3 ExoPlayer 选型决策
+- 字符串资源: 20+条媒体相关中文字符串
+
+### Changed
+
+- MEDIA_STORAGE.md: 照片上限从 10 张更新为 20 张
+- DiaryFormState: 新增 selectedVideoUris、selectedAudioUris 字段
+- TtMediaAddBar: 视频和音频按钮启用
+- DiaryAddScreen/DiaryEditScreen: SAF 视频/音频选择器集成
+
 ## [0.1.3] - 2026-10-10
 
 ### Added — Phase 2 成长记录与里程碑

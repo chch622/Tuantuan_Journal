@@ -14,6 +14,7 @@ import com.tuantuan.journal.domain.usecase.diary.SaveDiaryEntryUseCase
 import com.tuantuan.journal.domain.usecase.diary.SearchDiaryEntriesUseCase
 import com.tuantuan.journal.domain.usecase.diary.ToggleFavoriteUseCase
 import com.tuantuan.journal.domain.usecase.media.SaveMediaUseCase
+import com.tuantuan.journal.domain.usecase.media.ReorderMediaUseCase
 import com.tuantuan.journal.domain.usecase.tag.GetTagsUseCase
 import com.tuantuan.journal.domain.usecase.tag.ManageEntryTagUseCase
 import com.tuantuan.journal.domain.model.MediaType
@@ -43,7 +44,8 @@ class DiaryViewModel @Inject constructor(
     private val deleteDiaryEntryUseCase: DeleteDiaryEntryUseCase,
     private val getTagsUseCase: GetTagsUseCase,
     private val manageEntryTagUseCase: ManageEntryTagUseCase,
-    private val saveMediaUseCase: SaveMediaUseCase
+    private val saveMediaUseCase: SaveMediaUseCase,
+    private val reorderMediaUseCase: ReorderMediaUseCase
 ) : ViewModel() {
 
     private val _listState = MutableStateFlow(DiaryListUiState())
@@ -151,6 +153,22 @@ class DiaryViewModel @Inject constructor(
                         // 单个媒体保存失败不影响整体流程
                     }
                 }
+                // 保存选中的视频文件 — Phase 3 P0
+                state.selectedVideoUris.forEachIndexed { index, uri ->
+                    try {
+                        saveMediaUseCase(uri, entry.id, MediaType.VIDEO)
+                    } catch (_: Exception) {
+                        // 单个媒体保存失败不影响整体流程
+                    }
+                }
+                // 保存选中的音频文件 — Phase 3 P1
+                state.selectedAudioUris.forEachIndexed { index, uri ->
+                    try {
+                        saveMediaUseCase(uri, entry.id, MediaType.AUDIO)
+                    } catch (_: Exception) {
+                        // 单个媒体保存失败不影响整体流程
+                    }
+                }
                 _formState.value = state.copy(isSaving = false, savedSuccessfully = true)
             } catch (e: Exception) {
                 _formState.value = state.copy(isSaving = false, error = e.toUiError())
@@ -193,6 +211,22 @@ class DiaryViewModel @Inject constructor(
                 state.selectedMediaUris.forEachIndexed { index, uri ->
                     try {
                         saveMediaUseCase(uri, updated.id, MediaType.PHOTO)
+                    } catch (_: Exception) {
+                        // 单个媒体保存失败不影响整体流程
+                    }
+                }
+                // 保存新添加的视频文件 — Phase 3 P0
+                state.selectedVideoUris.forEachIndexed { index, uri ->
+                    try {
+                        saveMediaUseCase(uri, updated.id, MediaType.VIDEO)
+                    } catch (_: Exception) {
+                        // 单个媒体保存失败不影响整体流程
+                    }
+                }
+                // 保存新添加的音频文件 — Phase 3 P1
+                state.selectedAudioUris.forEachIndexed { index, uri ->
+                    try {
+                        saveMediaUseCase(uri, updated.id, MediaType.AUDIO)
                     } catch (_: Exception) {
                         // 单个媒体保存失败不影响整体流程
                     }
@@ -240,8 +274,8 @@ class DiaryViewModel @Inject constructor(
     /** 添加选中的照片 URI */
     fun addSelectedPhotos(uris: List<Uri>) {
         val current = _formState.value.selectedMediaUris
-        // 最多 10 张照片（MEDIA_STORAGE.md 限制）
-        val remaining = 10 - current.size
+        // 最多 20 张照片（MEDIA_UX.md §4.2 限制）
+        val remaining = 20 - current.size
         if (remaining <= 0) return
         _formState.value = _formState.value.copy(
             selectedMediaUris = current + uris.take(remaining)
@@ -254,6 +288,48 @@ class DiaryViewModel @Inject constructor(
         if (index in current.indices) {
             _formState.value = _formState.value.copy(
                 selectedMediaUris = current.toMutableList().apply { removeAt(index) }
+            )
+        }
+    }
+
+    /** 添加选中的视频 URI — Phase 3 P0 */
+    fun addSelectedVideos(uris: List<Uri>) {
+        val current = _formState.value.selectedVideoUris
+        // 最多 3 个视频（MEDIA_STORAGE.md 限制）
+        val remaining = 3 - current.size
+        if (remaining <= 0) return
+        _formState.value = _formState.value.copy(
+            selectedVideoUris = current + uris.take(remaining)
+        )
+    }
+
+    /** 移除选中的视频 URI — Phase 3 P0 */
+    fun removeSelectedVideo(index: Int) {
+        val current = _formState.value.selectedVideoUris
+        if (index in current.indices) {
+            _formState.value = _formState.value.copy(
+                selectedVideoUris = current.toMutableList().apply { removeAt(index) }
+            )
+        }
+    }
+
+    /** 添加选中的音频 URI — Phase 3 P1 */
+    fun addSelectedAudios(uris: List<Uri>) {
+        val current = _formState.value.selectedAudioUris
+        // 最多 5 个音频（MEDIA_STORAGE.md 限制）
+        val remaining = 5 - current.size
+        if (remaining <= 0) return
+        _formState.value = _formState.value.copy(
+            selectedAudioUris = current + uris.take(remaining)
+        )
+    }
+
+    /** 移除选中的音频 URI — Phase 3 P1 */
+    fun removeSelectedAudio(index: Int) {
+        val current = _formState.value.selectedAudioUris
+        if (index in current.indices) {
+            _formState.value = _formState.value.copy(
+                selectedAudioUris = current.toMutableList().apply { removeAt(index) }
             )
         }
     }
@@ -278,5 +354,12 @@ class DiaryViewModel @Inject constructor(
         _formState.value = _formState.value.copy(error = null)
         _listState.value = _listState.value.copy(error = null)
         _detailState.value = _detailState.value.copy(error = null)
+    }
+
+    /** 重排媒体排序 — Phase 3 P1, DATA_MODEL.md §7.2 */
+    fun reorderMedia(orderedMediaIds: List<String>) {
+        viewModelScope.launch {
+            reorderMediaUseCase(orderedMediaIds)
+        }
     }
 }

@@ -56,7 +56,7 @@ class SaveMediaUseCaseTest {
 
     @Test
     fun `throws MediaCountExceeded when photo limit reached`() = runTest {
-        whenever(repository.getMediaCount("entry-1")).thenReturn(10)
+        whenever(repository.getMediaCount("entry-1")).thenReturn(20)
         val useCase = SaveMediaUseCase(fakeMediaFileService, repository)
 
         try {
@@ -64,7 +64,7 @@ class SaveMediaUseCaseTest {
             assert(false) { "Should have thrown MediaCountExceeded" }
         } catch (e: DomainException.MediaCountExceeded) {
             assertThat(e.mediaType).isEqualTo(MediaType.PHOTO)
-            assertThat(e.maxCount).isEqualTo(10)
+            assertThat(e.maxCount).isEqualTo(20)
         }
     }
 
